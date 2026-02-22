@@ -1,0 +1,42 @@
+<div style="padding: 20px;">
+  <h2>Панель адміністратора БД</h2>
+  <button routerLink="/">← Назад до форми</button>
+  <button (click)="loadUsers()" style="margin-left: 10px;">Завантажити користувачів</button>
+  <button (click)="clearAll()" style="color: red; margin-left: 10px;">Очистити все</button>
+
+  <table border="1" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+    <thead>
+      <tr style="background: #eee;">
+        <th>ID</th>
+        <th>Ім'я</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.version }}</td>
+        <td>{{ user.name }}</td>
+        <!-- <td>{{ user.email }}</td> -->
+      </tr>
+      <tr *ngIf="users.length === 0">
+        <td colspan="3" style="text-align: center;">Дані відсутні</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="padding: 20px;">
+  <h2>Управління бекапами</h2>
+  <div *ngIf="backups.length === 0">Бекапів ще немає</div>
+
+  <ul style="list-style: none; padding: 0;">
+    <li *ngFor="let b of backups" style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding: 10px;">
+      <strong>{{ b.name }}</strong> <br>
+      <small>Дата: {{ b.date | date:'medium' }}</small> <br>
+      <button (click)="restore(b.name)" style="background: orange; color: white; margin-top: 5px;">
+        Відновити з цього бекапу
+      </button>
+    </li>
+  </ul>
+
+  <hr>
+</div>

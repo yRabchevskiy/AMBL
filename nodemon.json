@@ -1,0 +1,5 @@
+{
+  "watch": ["main.ts", "preload.ts"],
+  "ext": "ts",
+  "exec": "npm run electron-build && cross-env NODE_ENV=development electron ."
+}

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": ".",
+    "rootDir": ".", 
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "types": ["node"],
+    "isolatedModules": false
+  },
+  "include": [
+    "main.ts",
+    "preload.ts",
+    "migrations.ts",
+    "ipc/**/*.ts",
+    "models/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "release"
+  ]
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AMBL Завантаження...</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #2c3e50; /* Темний фон */
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .logo {
+            width: 150px;
+            height: 150px;
+            /* background-image: url('./src/assets/icon.png'); */ /* Якщо є іконка, розкоментуй */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .loading-bar {
+            width: 300px;
+            height: 8px;
+            background-color: #34495e;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 4px;
+            animation: loading 2s infinite ease-in-out;
+        }
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo"></div>
+    <h1>AMBL</h1>
+    <p>Завантаження даних...</p>
+    <div class="loading-bar">
+        <div class="loading-progress"></div>
+    </div>
+</body>
+</html>
