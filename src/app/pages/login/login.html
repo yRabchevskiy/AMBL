@@ -1,0 +1,19 @@
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <h2>Вхід в AMBL</h2>
+
+    <div class="field">
+      <input type="email" formControlName="email" placeholder="Email">
+    </div>
+
+    <div class="field">
+      <input type="password" formControlName="password" placeholder="Пароль">
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid || (isLoading$ | async)">
+      {{ (isLoading$ | async) ? 'Вхід...' : 'Увійти' }}
+    </button>
+
+    <p class="error-msg" *ngIf="error$ | async as err">{{ err }}</p>
+  </form>
+</div>

@@ -1,12 +1,11 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
 // Описуємо структуру документа
-const userSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  role: { type: String, default: 'user' },
-  version: { type: Number, default: 1 }, // Поле для відстеження версії схеми
-  createdAt: { type: Date, default: Date.now }
+  password: { type: String, required: true }, // Нове поле
+  role: { type: String, default: 'user' }
 });
 
-export const User = model('User', userSchema);
+export const User = model('User', UserSchema);

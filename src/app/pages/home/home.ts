@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { UserState } from '../../state/reducers/user.reducers';
 import { Store } from '@ngrx/store';
 import * as UserActions from '../../state/actions/user.actions';
+import * as AuthActions from '../../state/actions/auth.actions';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -47,5 +48,9 @@ export class HomeComponent implements OnInit {
       // Очищуємо локальну форму
       this.user = { name: '', email: '', role: 'user' };
     }
+  }
+
+  logout() {
+    this.store.dispatch(AuthActions.logout());
   }
 }

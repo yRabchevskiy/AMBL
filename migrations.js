@@ -13,7 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runMigrations = runMigrations;
+exports.seedAdmin = seedAdmin;
 const user_model_1 = require("./models/user.model");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const electron_log_1 = __importDefault(require("electron-log"));
 function runMigrations() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -39,6 +41,33 @@ function runMigrations() {
             electron_log_1.default.error('КРИТИЧНА ПОМИЛКА МІГРАЦІЇ:', error);
             // Можна викинути помилку далі, щоб зупинити запуск додатка
             throw error;
+        }
+    });
+}
+// FOR SEEDING INITIAL ADMIN USER!!! NEED to remove in production
+function seedAdmin() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const adminEmail = 'admin@ambl.com';
+        try {
+            const existingAdmin = yield user_model_1.User.findOne({ email: adminEmail });
+            if (!existingAdmin) {
+                electron_log_1.default.info('Створення початкового адміністратора...');
+                const hashedPassword = yield bcrypt_1.default.hash('admin123', 10);
+                const admin = new user_model_1.User({
+                    name: 'System Admin',
+                    email: adminEmail,
+                    password: hashedPassword,
+                    role: 'admin'
+                });
+                yield admin.save();
+                electron_log_1.default.info('Адміністратор успішно створений: admin@ambl.com / admin123');
+            }
+            else {
+                electron_log_1.default.info('Адміністратор уже існує в базі.');
+            }
+        }
+        catch (error) {
+            electron_log_1.default.error('Помилка при створенні адміна:', error);
         }
     });
 }

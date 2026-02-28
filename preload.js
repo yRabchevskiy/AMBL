@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 electron_1.contextBridge.exposeInMainWorld('electronAPI', {
+    invoke: (channel, data) => electron_1.ipcRenderer.invoke(channel, data),
     saveUser: (user) => electron_1.ipcRenderer.invoke('db-save-user', user),
     getUsers: () => electron_1.ipcRenderer.invoke('db-get-users'),
     clearAll: () => electron_1.ipcRenderer.invoke('db-clear-all'),

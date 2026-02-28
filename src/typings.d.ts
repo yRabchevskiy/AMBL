@@ -6,5 +6,8 @@ interface Window {
 
     getBackups: () => Promise<string[]>;
     restoreBackup: (name: string) => Promise<any>;
+
+    invoke: (channel: string, ...args: any[]) => Promise<any>;
+    on: (channel: string, func: (...args: any[]) => void) => void;
   };
 }

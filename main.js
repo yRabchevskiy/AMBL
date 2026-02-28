@@ -128,6 +128,7 @@ function startMongoDB() {
                     clearTimeout(timeout);
                     electron_log_1.default.info('Mongoose підключено.');
                     yield (0, migrations_1.runMigrations)(); // Запуск міграцій після підключення
+                    yield (0, migrations_1.seedAdmin)(); // <-- ДОДАЙ ЦЕЙ РЯДОК
                     resolve(true);
                 }
                 catch (e) {

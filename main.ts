@@ -9,7 +9,7 @@ import log from 'electron-log';
 // Імпортуємо наш новий модульний реєстратор IPC
 import { initIpcHandlers } from './ipc';
 // Імпортуємо міграції
-import { runMigrations } from './migrations';
+import { runMigrations, seedAdmin } from './migrations';
 import { EventEmitter } from 'events';
 
 
@@ -92,6 +92,10 @@ async function startMongoDB(): Promise<boolean> {
         clearTimeout(timeout);
         log.info('Mongoose підключено.');
         await runMigrations(); // Запуск міграцій після підключення
+
+        await seedAdmin(); // <-- ДОДАЙ ЦЕЙ РЯДОК
+
+        
         resolve(true);
       } catch (e) {
         setTimeout(connect, 1000);
