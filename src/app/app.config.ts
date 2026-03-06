@@ -8,17 +8,20 @@ import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './state/effects/user.effects';
 import { authReducer, getInitialAuthState } from './state/reducers/auth.reducer';
 import { AuthEffects } from './state/effects/auth.effects';
+import { FileEffects } from './state/effects/file.effects';
+import { fileReducer, initialFileState } from './state/reducers/file.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withHashLocation()),
     provideStore(
-      { user: userReducer, auth: authReducer }, // Редьюсери
+      { user: userReducer, auth: authReducer, files: fileReducer }, // Редьюсери
       {
         initialState: {
           user: initialUserState, // Передаємо початковий стан для гілки 'user'
-          auth: getInitialAuthState()
+          auth: getInitialAuthState(),
+          files: initialFileState,
         },
         runtimeChecks: {
           strictStateImmutability: false, // Вимикаємо сувору перевірку для стану
@@ -26,7 +29,7 @@ export const appConfig: ApplicationConfig = {
         }
       }
     ),
-    provideEffects([UserEffects, AuthEffects]),
+    provideEffects([UserEffects, AuthEffects, FileEffects]),
 
     // Підключаємо Redux DevTools (дуже корисно для дебагу в Chrome/Electron)
     provideStoreDevtools({

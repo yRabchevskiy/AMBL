@@ -1,0 +1,14 @@
+<div *ngIf="isLoading$ | async">Завантаження файлів...</div>
+
+<button (click)="chooseFolder()">Обрати папку</button>
+<h3 *ngIf="currentPath$ | async as path">Шлях: {{ path }}</h3>
+
+<table *ngIf="!(isLoading$ | async)">
+  <tr *ngFor="let item of items$ | async">
+    <td>{{ item.isDirectory ? '📁' : '📄' }}</td>
+    <td>{{ item.name }}</td>
+    <td>
+      <button *ngIf="item.isDirectory" (click)="openFolder(item.path)">Відкрити</button>
+    </td>
+  </tr>
+</table>

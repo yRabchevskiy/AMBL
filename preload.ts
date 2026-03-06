@@ -8,4 +8,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   getBackups: () => ipcRenderer.invoke('get-backups-list'),
   restoreBackup: (name: string) => ipcRenderer.invoke('restore-from-backup', name),
+
+  selectFolder: () => ipcRenderer.invoke('select-folder'),
+  readDirectory: (path: string) => ipcRenderer.invoke('read-directory', path),
 });

@@ -8,4 +8,6 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     clearAll: () => electron_1.ipcRenderer.invoke('db-clear-all'),
     getBackups: () => electron_1.ipcRenderer.invoke('get-backups-list'),
     restoreBackup: (name) => electron_1.ipcRenderer.invoke('restore-from-backup', name),
+    selectFolder: () => electron_1.ipcRenderer.invoke('select-folder'),
+    readDirectory: (path) => electron_1.ipcRenderer.invoke('read-directory', path),
 });

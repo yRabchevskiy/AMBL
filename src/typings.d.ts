@@ -9,5 +9,8 @@ interface Window {
 
     invoke: (channel: string, ...args: any[]) => Promise<any>;
     on: (channel: string, func: (...args: any[]) => void) => void;
+
+    selectFolder: () => Promise<string | null>;
+    readDirectory: (path: string) => Promise<any[]>;
   };
 }
