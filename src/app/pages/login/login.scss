@@ -1,0 +1,31 @@
+.a-logo {
+  display: block;
+  position: absolute;
+  top: 17.5%;
+  left: -2.5%;
+  width: 65%;
+  height: 65%;
+}
+
+.a-form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  margin: auto 2.5% auto auto;
+  min-width: 280px;
+  max-width: 420px;
+  width: 80%;
+  background-color: var(--a-white);
+  border-radius: 16px;
+  z-index: 1;
+  height: 50%;
+  border: 1px solid var(--a-gray-medium);
+}
+
+.a-error-msg {
+  min-height: 20px;
+  color: var(--a-error-main);
+  margin: 8px 0;
+  font-weight: 500;
+  text-align: center;
+}

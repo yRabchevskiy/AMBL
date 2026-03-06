@@ -1,19 +1,28 @@
-<div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <h2>Вхід в AMBL</h2>
+<img class="a-logo" src="/logo.svg" alt="AMBL Logo">
+<form class="a-form-container" [formGroup]="loginForm" (ngSubmit)="onLogin()">
 
-    <div class="field">
-      <input type="email" formControlName="email" placeholder="Email">
-    </div>
+  <div class="a-field m-top-auto">
+    <label class="a-field-label" for="email">Email:</label>
+    <input class="a-field-input" type="email" formControlName="email" id="email">
+  </div>
 
-    <div class="field">
-      <input type="password" formControlName="password" placeholder="Пароль">
-    </div>
+  <div class="a-field">
+    <label class="a-field-label" for="password">Password:</label>
+    <input class="a-field-input" type="password" formControlName="password" id="password">
+  </div>
 
-    <button type="submit" [disabled]="loginForm.invalid || (isLoading$ | async)">
-      {{ (isLoading$ | async) ? 'Вхід...' : 'Увійти' }}
-    </button>
 
-    <p class="error-msg" *ngIf="error$ | async as err">{{ err }}</p>
-  </form>
-</div>
+  <p class="a-error-msg">
+    @if ((error$ | async); as err) {
+    <span>{{ err }}</span>
+    }
+  </p>
+
+
+  <button class="a-button m-bottom-auto" type="submit" [disabled]="loginForm.invalid || (isLoading$ | async)">
+    {{ (isLoading$ | async) ? 'Loading...' : 'Sign In' }}
+  </button>
+
+
+
+</form>

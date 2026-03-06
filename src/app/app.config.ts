@@ -10,15 +10,19 @@ import { authReducer, getInitialAuthState } from './state/reducers/auth.reducer'
 import { AuthEffects } from './state/effects/auth.effects';
 import { FileEffects } from './state/effects/file.effects';
 import { fileReducer, initialFileState } from './state/reducers/file.reducer';
+import { appReducer, initialAppState } from './state/reducers/app.reducer';
+import { provideRouterStore, routerReducer } from '@ngrx/router-store'; // Імпортуй вбудований редьюсер
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withHashLocation()),
     provideStore(
-      { user: userReducer, auth: authReducer, files: fileReducer }, // Редьюсери
+      { app: appReducer, router: routerReducer, user: userReducer, auth: authReducer, files: fileReducer }, // Редьюсери
       {
         initialState: {
+          app: initialAppState, // Передаємо початковий стан для гілки 'app'
+          router: undefined, // Початковий стан для гілки 'router'
           user: initialUserState, // Передаємо початковий стан для гілки 'user'
           auth: getInitialAuthState(),
           files: initialFileState,
@@ -29,6 +33,7 @@ export const appConfig: ApplicationConfig = {
         }
       }
     ),
+    provideRouterStore(),
     provideEffects([UserEffects, AuthEffects, FileEffects]),
 
     // Підключаємо Redux DevTools (дуже корисно для дебагу в Chrome/Electron)

@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
-  templateUrl: './app.html',
-  styleUrl: './app.scss',
+  imports: [RouterOutlet],
+  template: '<router-outlet></router-outlet>',
   standalone: true
 })
 export class App {

@@ -1,0 +1,53 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300">
+  <defs>
+    <linearGradient id="hexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#800000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b22222;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="redLoopGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#b51d31;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8e1628;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="greyLoopGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8a8a8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8c8c8c;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
+      <feOffset dx="1" dy="1" result="offsetblur" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g transform="translate(180, 0) " filter="url(#shadow)">
+    <path d="M75,10 C45,10, 45,50, 75,50 L75,50 C105,50, 105,10, 75,10 Z" fill="url(#redLoopGrad)" />
+    <path d="M75,110 C45,110, 45,150, 75,150 L75,150 C105,150, 105,110, 75,110 Z" fill="url(#redLoopGrad)" />
+    <path d="M10,75 C10,45, 50,45, 50,75 L50,75 C50,105, 10,105, 10,75 Z" fill="url(#redLoopGrad)" />
+    <path d="M110,75 C110,45, 150,45, 150,75 L150,75 C150,105, 110,105, 110,75 Z" fill="url(#greyLoopGrad)" />
+
+    <g transform="translate(60, 60)" fill="#444">
+      <circle cx="15" cy="15" r="10"/>
+      <path d="M15,5 L15,0"/>
+      <path d="M15,25 L15,30"/>
+      <path d="M5,15 L0,15"/>
+      <path d="M25,15 L30,15"/>
+
+      <circle cx="15" cy="0" r="1"/>
+      <circle cx="15" cy="30" r="1"/>
+      <circle cx="0" cy="15" r="1"/>
+      <circle cx="30" cy="15" r="1"/>
+    </g>
+  </g>
+
+  <text x="250" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="50" fill="#800000">AMBL</text>
+
+  <path d="M50 240 L370 240 L375 230 L385 250 L395 200 L405 280 L415 230 L425 250 L430 240 L470 240" fill="none" stroke="url(#hexGradient)" stroke-width="3"/>
+</svg>

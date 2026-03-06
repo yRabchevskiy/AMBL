@@ -1,1 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
+@use './assets/general.scss';
+
+:root {
+  /* --- БАЗОВІ КОЛЬОРИ --- */
+  --a-white: #ffffff;
+  --a-black: #000000;
+  --a-gray-light: #e5e5e5;
+  --a-accent-red: #D2042D;
+
+  /* --- СТАН: HOVER (Наведення) --- */
+  /* Трохи темніший червоний та м'який сірий */
+  --a-hover-red: #b00326; 
+  --a-hover-gray: #d9d9d9;
+  --a-hover-white: #f9f9f9;
+
+  /* --- СТАН: SELECTED / ACTIVE (Вибрано) --- */
+  /* Насичений червоний для фокусу або світло-червоний фон для виділення */
+  --a-selected-red: #8e021e;
+  --a-selected-bg-red: #fbe6e9; /* Дуже світлий червоний для фону виділених рядків */
+  --a-selected-gray: #cccccc;
+
+  /* --- СТАН: DISABLED (Вимкнено) --- */
+  /* Кольори, що виглядають "неактивними" */
+  --a-disabled-bg: #f2f2f2;
+  --a-disabled-text: #a0a0a0;
+  --a-disabled-accent: #e5a1ad; /* "Блідий" червоний */
+
+  /* --- ДОДАТКОВІ ВІДТІНКИ СІРОГО --- */
+  --a-gray-medium: #999999;
+  --a-gray-dark: #333333;
+
+  /* --- ERROR (Використовуємо ваш базовий червоний) --- */
+  --a-error-main: #D2042D;
+  --a-error-hover: #b00326;
+  --a-error-bg: #fbe6e9; /* Світлий фон для алертів */
+
+  /* --- SUCCESS (Гармонійний зелений) --- */
+  --a-success-main: #28a745; 
+  --a-success-hover: #218838;
+  --a-success-bg: #e9f7ef;
+
+  /* --- WARNING (Теплий жовто-помаранчевий) --- */
+  /* Ми беремо ближче до помаранчевого, щоб він був читабельним на білому фоні */
+  --a-warning-main: #f39c12;
+  --a-warning-hover: #e67e22;
+  --a-warning-bg: #fff9e6;
+
+  /* --- INFO (Додатково: спокійний синій) --- */
+  --a-info-main: #17a2b8;
+  --a-info-bg: #e7f6f8;
+}

@@ -16,7 +16,6 @@ export class AuthEffects {
   login$ = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.login),
     mergeMap(({ email, password }) => {
-      debugger
       return from(this.dbService.login(email, password)).pipe(
         map(response => {
           if (response.success) {

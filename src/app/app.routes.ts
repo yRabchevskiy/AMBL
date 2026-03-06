@@ -4,6 +4,7 @@ import { HomeComponent } from './pages/home/home';
 import { authGuard } from './services/auth.guard';
 import { LoginComponent } from './pages/login/login';
 import { ExplorerComponent } from './pages/explorer/explorer';
+import { MasterpageComponent } from './pages/masterpage/masterpage';
 
 export const routes: Routes = [
   {
@@ -11,25 +12,38 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'home',
-    component: HomeComponent,
+    path: '',
+    component: MasterpageComponent,
     canActivate: [authGuard], // Не пустить без юзера в Store
     children: [
-      { path: 'explorer', component: ExplorerComponent } // Вкладений роут
+      {
+        path: 'home', component: HomeComponent, children: [
+          { path: 'explorer', component: ExplorerComponent } // Вкладений роут
+        ]
+      }, // Дефолтная страница внутри /home
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [authGuard] // Не пустить без юзера в Store
+      },
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      {
+        path: '**',
+        redirectTo: 'home'
+      }
     ]
   },
   {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [authGuard] // Не пустить без юзера в Store
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'login'
   }
 ];

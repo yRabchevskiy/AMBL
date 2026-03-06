@@ -8,7 +8,6 @@ export const selectFileState = createFeatureSelector<FileState>('files');
 export const selectAllFiles = createSelector(
   selectFileState,
   (state: FileState) => {
-    debugger
     return state.items || []; // Повертає Array, що і треба для *ngFor
   } // Повертає Array, що і треба для *ngFor
 );

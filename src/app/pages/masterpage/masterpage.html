@@ -1,0 +1,14 @@
+<nav class="a-navbar">
+  <a routerLink="/home" class="a-link" routerLinkActive="a-link-active" [routerLinkActiveOptions]="{exact: true}">
+    <span class="a-link-title">HOME</span>
+  </a>
+  <a routerLink="/home/explorer" class="a-link" routerLinkActive="a-link-active">
+    <span class="a-link-title">EXPLORER</span>
+  </a>
+  <a routerLink="/admin" class="a-link" routerLinkActive="a-link-active">
+    <span class="a-link-title">ADMIN</span>
+  </a>
+</nav>
+<div class="a-layout">
+  <router-outlet></router-outlet>
+</div>

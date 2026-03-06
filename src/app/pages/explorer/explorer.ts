@@ -35,7 +35,6 @@ export class ExplorerComponent {
   }
 
   openFolder(folderPath: string) {
-    debugger
     this.store.dispatch(FileActions.loadFiles({ path: folderPath }));
   }
 }
