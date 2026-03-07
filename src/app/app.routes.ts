@@ -1,49 +1,36 @@
 import { Routes } from '@angular/router';
-import { AdminComponent } from './pages/admin/admin';
-import { HomeComponent } from './pages/home/home';
 import { authGuard } from './services/auth.guard';
 import { LoginComponent } from './pages/login/login';
-import { ExplorerComponent } from './pages/explorer/explorer';
 import { MasterpageComponent } from './pages/masterpage/masterpage';
 
+
 export const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
+  { path: 'login', component: LoginComponent },
   {
     path: '',
     component: MasterpageComponent,
-    canActivate: [authGuard], // Не пустить без юзера в Store
+    canActivate: [authGuard],
     children: [
       {
-        path: 'home', component: HomeComponent, children: [
-          { path: 'explorer', component: ExplorerComponent } // Вкладений роут
-        ]
-      }, // Дефолтная страница внутри /home
+        path: 'home',
+        loadComponent: () => import('./pages/home/home').then(m => m.HomeComponent)
+      },
       {
         path: 'admin',
-        component: AdminComponent,
-        canActivate: [authGuard] // Не пустить без юзера в Store
+        loadComponent: () => import('./pages/admin/admin').then(m => m.AdminComponent),
+        canActivate: [authGuard],
+        data: { roles: ['ADMIN'] } // Тільки для адмінів
       },
       {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
+        path: 'users',
+        loadComponent: () => import('./pages/users/users').then(m => m.UsersComponent),
+        canActivate: [authGuard],
+        data: { roles: ['ADMIN', 'MODERATOR'] } // Для адмінів та модераторів
       },
-      {
-        path: '**',
-        redirectTo: 'home'
-      }
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', redirectTo: 'home' }
     ]
   },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: '**',
-    redirectTo: 'login'
-  }
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' }
 ];

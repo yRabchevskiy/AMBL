@@ -12,6 +12,7 @@ body {
   background-color: var(--a-gray-light);
   color: var(--a-black);
   font-size: 16px;
+  overflow: hidden;
 }
 
 * {
@@ -20,7 +21,8 @@ body {
 
 app-root,
 app-login,
-app-masterpage {
+app-masterpage,
+app-home {
   display: flex;
   flex-direction: row;
   flex: 1 1 100%;
@@ -68,13 +70,14 @@ a {
   font-weight: 700;
   transition: background-color 0.2s ease;
   height: 40px;
-
+  min-width: 148px;
   font-size: 16px;
 }
 
 .m-top-auto {
   margin-top: auto;
 }
+
 .m-bottom-auto {
   margin-bottom: auto;
 }

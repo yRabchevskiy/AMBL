@@ -1,22 +1,22 @@
 import { createReducer, on } from '@ngrx/store';
 import * as FileActions from '../actions/file.actions';
 
-export interface FileState {
+export interface FilesState {
   items: any[];
   currentPath: string;
   isLoading: boolean;
   error: string | null;
 }
 
-export const initialFileState: FileState = {
+export const initialFilesState: FilesState = {
   items: [],
   currentPath: '',
   isLoading: false,
   error: null
 };
 
-export const fileReducer = createReducer(
-  initialFileState,
+export const filesReducer = createReducer(
+  initialFilesState,
   on(FileActions.loadFiles, (state) => ({ 
     ...state, isLoading: true 
   })),

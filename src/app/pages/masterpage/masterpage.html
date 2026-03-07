@@ -1,13 +1,21 @@
 <nav class="a-navbar">
-  <a routerLink="/home" class="a-link" routerLinkActive="a-link-active" [routerLinkActiveOptions]="{exact: true}">
-    <span class="a-link-title">HOME</span>
-  </a>
-  <a routerLink="/home/explorer" class="a-link" routerLinkActive="a-link-active">
-    <span class="a-link-title">EXPLORER</span>
-  </a>
-  <a routerLink="/admin" class="a-link" routerLinkActive="a-link-active">
-    <span class="a-link-title">ADMIN</span>
-  </a>
+  <div class="a-navbar-links">
+    <a routerLink="/home" class="a-link" routerLinkActive="a-link-active" [routerLinkActiveOptions]="{exact: true}">
+      <span class="a-link-title">HOME</span>
+    </a>
+    <a routerLink="/users" class="a-link" routerLinkActive="a-link-active" *appHasRole="['ADMIN', 'MODERATOR']">
+      <span class="a-link-title">USERS</span>
+    </a>
+    <a routerLink="/admin" class="a-link" routerLinkActive="a-link-active" *appHasRole="['ADMIN']">
+      <span class="a-link-title">ADMIN</span>
+    </a>
+  </div>
+
+  <div class="a-navbar-actions">
+    {{ (currentUser$ | async)?.name || 'Guest' }}
+    <button class="a-button" (click)="logout()">LOGOUT</button>
+  </div>
+
 </nav>
 <div class="a-layout">
   <router-outlet></router-outlet>

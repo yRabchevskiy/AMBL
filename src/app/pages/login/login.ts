@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
-import * as AuthActions from '../../state/actions/auth.actions';
+import { AppActions } from '../../state/actions/app.actions';
+import { IAppState } from '../../state/app.state';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +22,13 @@ export class LoginComponent {
   });
 
   // Підписуємось на стан помилок та завантаження зі стору
-  error$ = this.store.select(state => (state as any).auth.error);
-  isLoading$ = this.store.select(state => (state as any).auth.isLoading);
+  error$ = this.store.select((state: IAppState) => state.settings.auth.error);
+  isLoading$ = this.store.select((state: IAppState) => state.settings.auth.isLoading);
 
   onLogin() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.store.dispatch(AuthActions.login({ email, password }));
+      this.store.dispatch(AppActions.login({ email, password }));
     }
   }
 }

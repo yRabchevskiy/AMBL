@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { from, of } from 'rxjs';
 import { map, mergeMap, catchError, tap } from 'rxjs/operators';
 import { DatabaseService } from '../../services/database.service';
-import * as AuthActions from '../actions/auth.actions';
+import { AppActions } from '../actions/app.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -14,18 +14,18 @@ export class AuthEffects {
 
   // 1. Ефект логіну через IPC
   login$ = createEffect(() => this.actions$.pipe(
-    ofType(AuthActions.login),
+    ofType(AppActions.login),
     mergeMap(({ email, password }) => {
       return from(this.dbService.login(email, password)).pipe(
         map(response => {
           if (response.success) {
-            return AuthActions.loginSuccess({ user: response.data });
+            return AppActions.loginSuccess({ user: response.data });
           }
-          return AuthActions.loginFailure({ error: response.error });
+          return AppActions.loginFailure({ error: response.error });
         }),
         catchError((err) => {
           console.dir(err);
-          return of(AuthActions.loginFailure({ error: err || 'Помилка з\'єднання з БД' }));
+          return of(AppActions.loginFailure({ error: err || 'Помилка з\'єднання з БД' }));
         })
       )
     }
@@ -34,7 +34,7 @@ export class AuthEffects {
 
   // 2. Збереження в localStorage при успіху (з таймером на 2 години)
   persistUser$ = createEffect(() => this.actions$.pipe(
-    ofType(AuthActions.loginSuccess),
+    ofType(AppActions.loginSuccess),
     tap(({ user }) => {
       const expiry = Date.now() + 2 * 60 * 60 * 1000; // Поточний час + 2 години в мс
       const authData = { user, expiry };
@@ -45,7 +45,7 @@ export class AuthEffects {
 
   // 3. Ефект виходу (Logout)
   logout$ = createEffect(() => this.actions$.pipe(
-    ofType(AuthActions.logout),
+    ofType(AppActions.logout),
     tap(() => {
       localStorage.removeItem('auth_data');
       this.router.navigate(['/login']);

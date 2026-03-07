@@ -1,51 +1,6 @@
-<div class="home-container">
-  <h1>🏠 Головна панель (Тест БД)</h1>
-
-  <section class="form-section">
-    <h3>Додати нового користувача</h3>
-    <form (submit)="onSubmit(); $event.preventDefault()" class="user-form">
-      <div class="field">
-        <label>Ім'я:</label>
-        <input type="text" [(ngModel)]="user.name" name="name" placeholder="Введіть ім'я" required>
-      </div>
-
-      <div class="field">
-        <label>Email:</label>
-        <input type="email" [(ngModel)]="user.email" name="email" placeholder="example@mail.com" required>
-      </div>
-
-      <div class="field">
-        <label>Роль:</label>
-        <select [(ngModel)]="user.role" name="role">
-          <option value="user">Користувач</option>
-          <option value="admin">Адміністратор</option>
-        </select>
-      </div>
-
-      <button type="submit">Зберегти в MongoDB</button>
-    </form>
-  </section>
-
-  <hr>
-
-  <section class="list-section">
-    <div class="list-header">
-      <h3>Список користувачів (з MongoDB)</h3>
-      <button class="refresh-btn" (click)="loadUsers()">🔄 Оновити</button>
-    </div>
-
-    <div class="container" *ngIf="users$ | async as users; else loading">
-      <div *ngFor="let user of users" class="user-card">
-        {{ user.name }} ({{ user.email }})
-      </div>
-
-      <p *ngIf="users.length === 0">Користувачів не знайдено</p>
-    </div>
-
-    <ng-template #loading>
-      <p>Завантаження даних з MongoDB...</p>
-    </ng-template>
-  </section>
-</div>
-
-<router-outlet></router-outlet>
+<svg width="100%" height="100%" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg" appSvgZoom [minZoom]="0.1" [maxZoom]="50">
+  <g>
+<rect width="0.01" height="0.01" fill="red" />
+  </g>
+  
+</svg>

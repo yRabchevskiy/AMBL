@@ -1,20 +1,20 @@
 import { createReducer, on } from '@ngrx/store';
 import * as UserActions from '../actions/user.actions';
 
-export interface UserState {
+export interface UsersState {
   users: any[];
   loading: boolean;
   error: string | null;
 }
 
-export const initialUserState: UserState = {
+export const initialUsersState: UsersState = {
   users: [],
   loading: false,
   error: null
 };
 
-export const userReducer = createReducer(
-  initialUserState,
+export const usersReducer = createReducer(
+  initialUsersState,
   on(UserActions.loadUsers, state => ({ ...state, loading: true })),
   on(UserActions.loadUsersSuccess, (state, { users }) => ({
     ...state,

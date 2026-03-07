@@ -3,30 +3,24 @@ import { provideRouter, withHashLocation } from '@angular/router';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
-import { initialUserState, userReducer } from './state/reducers/user.reducers';
+import { usersReducer } from './state/reducers/user.reducers';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './state/effects/user.effects';
-import { authReducer, getInitialAuthState } from './state/reducers/auth.reducer';
 import { AuthEffects } from './state/effects/auth.effects';
 import { FileEffects } from './state/effects/file.effects';
-import { fileReducer, initialFileState } from './state/reducers/file.reducer';
-import { appReducer, initialAppState } from './state/reducers/app.reducer';
+import { filesReducer } from './state/reducers/file.reducer';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store'; // Імпортуй вбудований редьюсер
+import { appState } from './state/app.state';
+import { settingsReducer } from './state/reducers/settings.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withHashLocation()),
     provideStore(
-      { app: appReducer, router: routerReducer, user: userReducer, auth: authReducer, files: fileReducer }, // Редьюсери
+      { settings: settingsReducer, router: routerReducer, users: usersReducer, files: filesReducer }, // Редьюсери
       {
-        initialState: {
-          app: initialAppState, // Передаємо початковий стан для гілки 'app'
-          router: undefined, // Початковий стан для гілки 'router'
-          user: initialUserState, // Передаємо початковий стан для гілки 'user'
-          auth: getInitialAuthState(),
-          files: initialFileState,
-        },
+        initialState: appState,
         runtimeChecks: {
           strictStateImmutability: false, // Вимикаємо сувору перевірку для стану
           strictActionImmutability: false, // Вимикаємо сувору перевірку для екшенів

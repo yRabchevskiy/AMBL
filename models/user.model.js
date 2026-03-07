@@ -40,6 +40,11 @@ const UserSchema = new mongoose_1.default.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true }, // Нове поле
-    role: { type: String, default: 'user' }
+    role: { type: String, default: 'USER' }
 });
+const UserRoles = ['USER', 'ADMIN', 'MODERATOR']; // Дозволені ролі
+// Додаємо валідацію для ролі
+UserSchema.path('role').validate(function (value) {
+    return UserRoles.includes(value);
+}, 'Invalid role');
 exports.User = (0, mongoose_1.model)('User', UserSchema);

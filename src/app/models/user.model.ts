@@ -6,3 +6,5 @@ export interface IUser {
   version?: number;
   createdAt?: Date;
 }
+
+export const UserRoles = ['USER', 'ADMIN', 'MODERATOR'];
