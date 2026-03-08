@@ -1,17 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
-import { AppActions } from '../actions/app.actions';
 import { IUser } from '../../models/user.model';
+import { SettingsActions } from '../actions/settings.actions';
 
 export interface IAuthState {
   currentUser: IUser | null;
   error: string | null;
-  isLoading: boolean;
+  loading: boolean;
 }
 
 export const initialAuthState: IAuthState = {
   currentUser: null,
   error: null,
-  isLoading: false
+  loading: false
 };
 
 export interface ISettingsState {
@@ -27,20 +27,20 @@ export const initialSettingsState: ISettingsState = {
 
 export const settingsReducer = createReducer(
   initialSettingsState,
-  on(AppActions.routeChanged, (state, { url }) => ({ ...state, activeRoute: url })),
-  on(AppActions.login, state => ({ ...state, isLoading: true, error: null })),
-  on(AppActions.loginSuccess, (state, { user }) => ({
+  on(SettingsActions.routeChanged, (state, { url }) => ({ ...state, activeRoute: url })),
+  on(SettingsActions.login, state => ({ ...state, loading: true, error: null })),
+  on(SettingsActions.loginSuccess, (state, { user }) => ({
     ...state,
     user,
-    isLoading: false,
+    loading: false,
     error: null
   })),
-  on(AppActions.loginFailure, (state, { error }) => ({
+  on(SettingsActions.loginFailure, (state, { error }) => ({
     ...state,
-    isLoading: false,
+    loading: false,
     error
   })),
-  on(AppActions.logout, () => initialSettingsState)
+  on(SettingsActions.logout, () => initialSettingsState)
 );
 
 

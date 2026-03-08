@@ -4,8 +4,8 @@ import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import * as RouterSelectors from '../../state/selectors/router.selectors';
 import { HasRoleDirective } from '../../directives/role.directive';
-import { AppActions } from '../../state/actions/app.actions';
-import  { selectCurrentUser } from '../../state/selectors/app.selectors';
+import  { selectCurrentUser } from '../../state/selectors/settings.selectors';
+import { SettingsActions } from '../../state/actions/settings.actions';
 
 @Component({
   selector: 'app-masterpage',
@@ -29,6 +29,6 @@ export class MasterpageComponent {
   // }
 
   logout() {
-    this.store.dispatch(AppActions.logout());
+    this.store.dispatch(SettingsActions.logout());
   }
 }

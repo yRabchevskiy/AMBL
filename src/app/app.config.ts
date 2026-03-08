@@ -3,22 +3,19 @@ import { provideRouter, withHashLocation } from '@angular/router';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
-import { usersReducer } from './state/reducers/user.reducers';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './state/effects/user.effects';
 import { AuthEffects } from './state/effects/auth.effects';
 import { FileEffects } from './state/effects/file.effects';
-import { filesReducer } from './state/reducers/file.reducer';
-import { provideRouterStore, routerReducer } from '@ngrx/router-store'; // Імпортуй вбудований редьюсер
-import { appState } from './state/app.state';
-import { settingsReducer } from './state/reducers/settings.reducer';
+import { provideRouterStore } from '@ngrx/router-store'; // Імпортуй вбудований редьюсер
+import { appReducers, appState } from './state/app.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withHashLocation()),
     provideStore(
-      { settings: settingsReducer, router: routerReducer, users: usersReducer, files: filesReducer }, // Редьюсери
+      appReducers, // Редьюсери
       {
         initialState: appState,
         runtimeChecks: {

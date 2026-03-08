@@ -12,6 +12,8 @@ export const selectAuth = createSelector(
   }
 );
 
+
+// CurrentUser
 export const selectCurrentUser = createSelector(
   selectAuth,
   (state: IAuthState) => {
@@ -19,9 +21,16 @@ export const selectCurrentUser = createSelector(
   }
 );
 
-export const selectUserLoading = createSelector(
+export const selectCurrentUserLoading = createSelector(
   selectAuth,
   (state: IAuthState) => {
-    return state.isLoading || false;
+    return state.loading || false;
+  }
+);
+
+export const selectCurrentUserError = createSelector(
+  selectAuth,
+  (state: IAuthState) => {
+    return state.error || null;
   }
 );

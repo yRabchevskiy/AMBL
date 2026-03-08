@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { SvgZoomDirective } from '../../directives/svg/zoom.directive';
 import { Observable } from 'rxjs';
+import { selectAllUsers } from '../../state/selectors/users.selectors';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent  {
   // Об'єкт для форми (згідно зі схемою Mongoose)
  
 
-  data$: Observable<any[]> = this.store.select(state => state.user.users);
+  data$: Observable<any[]> = this.store.select(selectAllUsers);
 
   constructor() { }
 

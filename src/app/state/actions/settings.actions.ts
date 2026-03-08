@@ -12,7 +12,7 @@ const loginFailure = createAction('[Auth] Login Failure', props<{ error: string 
 const logout = createAction('[Auth] Logout');
 
 
-export const AppActions = {
+export const SettingsActions = {
   routeChanged,
   login,
   loginSuccess,

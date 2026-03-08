@@ -2,13 +2,13 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs';
-import { IAppState } from '../state/app.state';
+import { selectCurrentUser } from '../state/selectors/settings.selectors';
 
 export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const store = inject(Store);
   const router = inject(Router);
 
-  return store.select((state: IAppState) => state.settings.auth.currentUser).pipe(
+  return store.select(selectCurrentUser).pipe(
     take(1),
     map(user => {
       // 1. Якщо юзера немає — на логін
