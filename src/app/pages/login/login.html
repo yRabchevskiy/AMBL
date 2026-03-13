@@ -2,13 +2,14 @@
 <form class="a-form-container" [formGroup]="loginForm" (ngSubmit)="onLogin()">
 
   <div class="a-field m-top-auto">
-    <label class="a-field-label" for="email">Email:</label>
-    <input class="a-field-input" type="email" formControlName="email" id="email">
+    <label class="a-field-label" for="identity">Username:</label>
+    <input class="a-field-input" type="text" formControlName="identity" id="identity">
   </div>
 
   <div class="a-field">
     <label class="a-field-label" for="password">Password:</label>
-    <input class="a-field-input" type="password" formControlName="password" id="password">
+    <input class="a-field-input" [type]="showPassword ? 'text' : 'password'" formControlName="password" id="password">
+    <span (click)="onShowPasswordToggle()">X</span>
   </div>
 
 

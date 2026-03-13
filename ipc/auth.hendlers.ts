@@ -3,12 +3,14 @@ import { ipcMain, app } from 'electron';
 import { User } from '../models/user.model';
 
 export function registerAuthHandlers() {
-  ipcMain.handle('auth-login', async (event, { email, password }) => {
+  ipcMain.handle('auth-login', async (event, { identity, password }) => {
     try {
-      const user = await User.findOne({ email }).lean();
+      const user = await User.findOne({ identity }).lean();
+      console.log(user);
       if (!user) return { success: false, error: 'Користувача не знайдено' };
 
       const match = await bcrypt.compare(password, user.password);
+      console.log(user.password, '-------------', password, match);
       if (!match) return { success: false, error: 'Невірний пароль' };
 
       const { password: _, ...userWithoutPassword } = user;

@@ -28,12 +28,14 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const electron_1 = require("electron");
 const user_model_1 = require("../models/user.model");
 function registerAuthHandlers() {
-    electron_1.ipcMain.handle('auth-login', (event_1, _a) => __awaiter(this, [event_1, _a], void 0, function* (event, { email, password }) {
+    electron_1.ipcMain.handle('auth-login', (event_1, _a) => __awaiter(this, [event_1, _a], void 0, function* (event, { identity, password }) {
         try {
-            const user = yield user_model_1.User.findOne({ email }).lean();
+            const user = yield user_model_1.User.findOne({ identity }).lean();
+            console.log(user);
             if (!user)
                 return { success: false, error: 'Користувача не знайдено' };
             const match = yield bcrypt_1.default.compare(password, user.password);
+            console.log(user.password, '-------------', password, match);
             if (!match)
                 return { success: false, error: 'Невірний пароль' };
             const { password: _ } = user, userWithoutPassword = __rest(user, ["password"]);

@@ -47,17 +47,17 @@ function runMigrations() {
 // FOR SEEDING INITIAL ADMIN USER!!! NEED to remove in production
 function seedAdmin() {
     return __awaiter(this, void 0, void 0, function* () {
-        const adminEmail = 'admin@ambl.com';
+        const user_identity = 'admin';
         try {
-            const existingAdmin = yield user_model_1.User.findOne({ email: adminEmail });
+            const existingAdmin = yield user_model_1.User.findOne({ identity: user_identity });
             if (!existingAdmin) {
                 electron_log_1.default.info('Створення початкового адміністратора...');
-                const hashedPassword = yield bcrypt_1.default.hash('admin123', 10);
+                const hashedPassword = yield bcrypt_1.default.hash('+', 10);
                 const admin = new user_model_1.User({
-                    name: 'System Admin',
-                    email: adminEmail,
+                    name: 'Admin',
+                    identity: user_identity,
                     password: hashedPassword,
-                    role: 'admin'
+                    role: 'ADMIN'
                 });
                 yield admin.save();
                 electron_log_1.default.info('Адміністратор успішно створений: admin@ambl.com / admin123');

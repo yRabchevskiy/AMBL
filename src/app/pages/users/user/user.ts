@@ -13,18 +13,18 @@ export class UserComponent {
   private store = inject(Store);
   user = {
     name: '',
-    email: '',
+    identity: '',
     role: 'user'
   };
 
 
   onSubmit() {
-    if (this.user.name && this.user.email) {
+    if (this.user.name && this.user.identity) {
       // Відправляємо екшен
       this.store.dispatch(UserActions.createUser({ user: this.user }));
 
       // Очищуємо локальну форму
-      this.user = { name: '', email: '', role: 'user' };
+      this.user = { name: '', identity: '', role: 'user' };
     }
   }
 }

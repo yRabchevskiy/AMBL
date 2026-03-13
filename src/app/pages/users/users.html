@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Email</th>
+      <th>identity</th>
       <th>Role</th>
     </tr>
   </thead>
@@ -10,7 +10,7 @@
     @for (user of users$ | async; track $index) {
     <tr>
       <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
+      <td>{{ user.identity }}</td>
       <td>{{ user.role }}</td>
     </tr>
     }

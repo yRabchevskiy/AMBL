@@ -36,21 +36,21 @@ export async function runMigrations() {
 // FOR SEEDING INITIAL ADMIN USER!!! NEED to remove in production
 
 export async function seedAdmin() {
-  const adminEmail = 'admin@ambl.com';
+  const user_identity = 'admin';
   
   try {
-    const existingAdmin = await User.findOne({ email: adminEmail });
+    const existingAdmin = await User.findOne({ identity: user_identity });
     
     if (!existingAdmin) {
       log.info('Створення початкового адміністратора...');
       
-      const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hashedPassword = await bcrypt.hash('+', 10);
       
       const admin = new User({
-        name: 'System Admin',
-        email: adminEmail,
+        name: 'Admin',
+        identity: user_identity,
         password: hashedPassword,
-        role: 'admin'
+        role: 'ADMIN'
       });
 
       await admin.save();

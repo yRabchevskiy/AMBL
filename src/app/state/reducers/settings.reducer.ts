@@ -28,18 +28,17 @@ export const initialSettingsState: ISettingsState = {
 export const settingsReducer = createReducer(
   initialSettingsState,
   on(SettingsActions.routeChanged, (state, { url }) => ({ ...state, activeRoute: url })),
-  on(SettingsActions.login, state => ({ ...state, loading: true, error: null })),
-  on(SettingsActions.loginSuccess, (state, { user }) => ({
+  on(SettingsActions.login, state => ({ ...state, auth: { ...state.auth, loading: true, error: null } })),
+  on(SettingsActions.loginSuccess, (state, { currentUser }) => ({
     ...state,
-    user,
-    loading: false,
-    error: null
+    auth: { ...state.auth, currentUser, loading: false, error: null }
   })),
-  on(SettingsActions.loginFailure, (state, { error }) => ({
+  on(SettingsActions.loginFailure, (state, { error }) => {
+    return ({
     ...state,
-    loading: false,
-    error
-  })),
+    auth: { ...state.auth, loading: false, error }
+  })
+  }),
   on(SettingsActions.logout, () => initialSettingsState)
 );
 

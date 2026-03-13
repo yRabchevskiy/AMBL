@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as fsEx from 'fs-extra';
 import log from 'electron-log';
+import installExtension, { REDUX_DEVTOOLS } from 'electron-devtools-installer';
 
 // Імпортуємо наш новий модульний реєстратор IPC
 import { initIpcHandlers } from './ipc';
@@ -50,7 +51,7 @@ async function createDatabaseBackup(isManual: boolean = false) {
   const userDataPath = app.getPath('userData');
   const dbPath = path.join(userDataPath, 'ambl-db-data');
   const backupRoot = path.join(userDataPath, 'backups');
-  
+
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const prefix = isManual ? 'manual-' : 'auto-';
   const backupPath = path.join(backupRoot, `${prefix}${timestamp}`);
@@ -80,7 +81,7 @@ async function startMongoDB(): Promise<boolean> {
     : path.join(__dirname, 'resources', 'bin', platform, platform === 'win32' ? 'mongod.exe' : 'mongod');
 
   log.info(`Запуск MongoDB з: ${mongoBin}`);
-  
+
   mongoProcess = spawn(mongoBin, [`--dbpath=${dbPath}`, `--port=${port}`, '--bind_ip=127.0.0.1']);
 
   return new Promise((resolve) => {
@@ -95,7 +96,7 @@ async function startMongoDB(): Promise<boolean> {
 
         await seedAdmin(); // <-- ДОДАЙ ЦЕЙ РЯДОК
 
-        
+
         resolve(true);
       } catch (e) {
         setTimeout(connect, 1000);
@@ -138,6 +139,18 @@ function createMainWindow() {
 
 // --- ЖИТТЄВИЙ ЦИКЛ APP ---
 
+async function setupDevTools() {
+  try {
+    // Встановлюємо розширення
+    const ext = await installExtension(REDUX_DEVTOOLS, {
+      loadExtensionOptions: { allowFileAccess: true }
+    });
+    console.log(`Added Extension: ${ext.name}`);
+  } catch (err) {
+    console.error('Extension error:', err);
+  }
+}
+
 app.on('ready', async () => {
   // 1. Реєструємо всі модульні IPC обробники (User, Backup, Logs)
   initIpcHandlers();
@@ -150,6 +163,8 @@ app.on('ready', async () => {
 
   // 4. Стартуємо БД та головне вікно
   if (await startMongoDB()) {
+    // Встановлюємо Redux DevTools тільки в режимі розробки
+    await setupDevTools();
     createMainWindow();
   } else {
     log.error('Критична помилка: БД не запустилася.');

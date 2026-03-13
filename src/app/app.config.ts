@@ -32,6 +32,7 @@ export const appConfig: ApplicationConfig = {
       maxAge: 25, // зберігати останні 25 станів
       logOnly: !isDevMode(),
       connectInZone: true, // ВАЖЛИВО для Electron: тримає зв'язок з зоною Angular
+      name: 'AMBL DevTools',
       serialize: {
         options: {
           undefined: true,

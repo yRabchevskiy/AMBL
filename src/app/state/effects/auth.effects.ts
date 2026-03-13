@@ -15,11 +15,13 @@ export class AuthEffects {
   // 1. Ефект логіну через IPC
   login$ = createEffect(() => this.actions$.pipe(
     ofType(SettingsActions.login),
-    mergeMap(({ email, password }) => {
-      return from(this.dbService.login(email, password)).pipe(
+    mergeMap(({ identity, password }) => {
+      debugger
+      return from(this.dbService.login(identity, password)).pipe(
         map(response => {
+          console.log(response);
           if (response.success) {
-            return SettingsActions.loginSuccess({ user: response.data });
+            return SettingsActions.loginSuccess({ currentUser: response.data });
           }
           return SettingsActions.loginFailure({ error: response.error });
         }),
@@ -35,9 +37,9 @@ export class AuthEffects {
   // 2. Збереження в localStorage при успіху (з таймером на 2 години)
   persistUser$ = createEffect(() => this.actions$.pipe(
     ofType(SettingsActions.loginSuccess),
-    tap(({ user }) => {
+    tap(({ currentUser }) => {
       const expiry = Date.now() + 2 * 60 * 60 * 1000; // Поточний час + 2 години в мс
-      const authData = { user, expiry };
+      const authData = { currentUser, expiry };
       localStorage.setItem('auth_data', JSON.stringify(authData));
       this.router.navigate(['/home']);
     })

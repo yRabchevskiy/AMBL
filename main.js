@@ -53,6 +53,7 @@ const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
 const fsEx = __importStar(require("fs-extra"));
 const electron_log_1 = __importDefault(require("electron-log"));
+const electron_devtools_installer_1 = __importStar(require("electron-devtools-installer"));
 // Імпортуємо наш новий модульний реєстратор IPC
 const ipc_1 = require("./ipc");
 // Імпортуємо міграції
@@ -168,6 +169,20 @@ function createMainWindow() {
     });
 }
 // --- ЖИТТЄВИЙ ЦИКЛ APP ---
+function setupDevTools() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Встановлюємо розширення
+            const ext = yield (0, electron_devtools_installer_1.default)(electron_devtools_installer_1.REDUX_DEVTOOLS, {
+                loadExtensionOptions: { allowFileAccess: true }
+            });
+            console.log(`Added Extension: ${ext.name}`);
+        }
+        catch (err) {
+            console.error('Extension error:', err);
+        }
+    });
+}
 electron_1.app.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
     // 1. Реєструємо всі модульні IPC обробники (User, Backup, Logs)
     (0, ipc_1.initIpcHandlers)();
@@ -177,6 +192,8 @@ electron_1.app.on('ready', () => __awaiter(void 0, void 0, void 0, function* () 
     yield createDatabaseBackup(false);
     // 4. Стартуємо БД та головне вікно
     if (yield startMongoDB()) {
+        // Встановлюємо Redux DevTools тільки в режимі розробки
+        yield setupDevTools();
         createMainWindow();
     }
     else {

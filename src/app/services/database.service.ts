@@ -10,8 +10,8 @@ export class DatabaseService {
   async getBackups() { return await window.electronAPI.getBackups(); }
   async restore(name: string) { return await window.electronAPI.restoreBackup(name); }
 
-  async login(email: string, password: string): Promise<any> {
+  async login(identity: string, password: string): Promise<any> {
     // Використовуємо саме electronAPI, як вказано у твоєму інтерфейсі
-    return await window.electronAPI.invoke('auth-login', { email, password });
+    return await window.electronAPI.invoke('auth-login', { identity, password });
   }
 }

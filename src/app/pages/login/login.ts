@@ -16,19 +16,25 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private store = inject(Store);
 
+  showPassword = false;
+
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    identity: ['', [Validators.required, Validators.minLength(3)]],
+    password: ['', [Validators.required, Validators.minLength(1)]]
   });
 
   // Підписуємось на стан помилок та завантаження зі стору
   error$ = this.store.select(selectCurrentUserError);
   isLoading$ = this.store.select(selectCurrentUserLoading);
 
+  onShowPasswordToggle() {
+    this.showPassword = !this.showPassword;
+  }
+
   onLogin() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.store.dispatch(SettingsActions.login({ email, password }));
+      const { identity, password } = this.loginForm.value;
+      this.store.dispatch(SettingsActions.login({ identity, password }));
     }
   }
 }
