@@ -10,4 +10,15 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     restoreBackup: (name) => electron_1.ipcRenderer.invoke('restore-from-backup', name),
     selectFolder: () => electron_1.ipcRenderer.invoke('select-folder'),
     readDirectory: (path) => electron_1.ipcRenderer.invoke('read-directory', path),
+    getStructure: (id) => electron_1.ipcRenderer.invoke('get-full-structure', id),
+    createUnion: (payload) => electron_1.ipcRenderer.invoke('create-union', payload),
+    moveUnion: (payload) => electron_1.ipcRenderer.invoke('move-union', payload),
+    deleteStructure: (id) => electron_1.ipcRenderer.invoke('delete-structure', id),
+    createStructure: (payload) => electron_1.ipcRenderer.invoke('create-structure', payload),
+    addPosition: (payload) => electron_1.ipcRenderer.invoke('add-position', payload),
+    deletePosition: (payload) => electron_1.ipcRenderer.invoke('delete-position', payload),
+    assignUserToPosition: (payload) => electron_1.ipcRenderer.invoke('assign-user-to-position', payload),
+    on: (channel, callback) => {
+        electron_1.ipcRenderer.on(channel, (_event, ...args) => callback(...args));
+    }
 });

@@ -3,6 +3,7 @@ import { registerBackupHandlers } from './backup.handlers';
 import { registerLogHandlers } from './log.handlers';
 import { registerAuthHandlers } from './auth.hendlers';
 import { initFileHandlers } from './file.handlers';
+import { registerStructureHandlers } from './structure.handlers';
 
 export function initIpcHandlers() {
   // Реєструємо модульні обробники
@@ -11,6 +12,7 @@ export function initIpcHandlers() {
   registerLogHandlers();
   registerAuthHandlers();
   initFileHandlers();
+  registerStructureHandlers(); // Додаємо обробники для структури
 
   
   console.log('✅ Всі IPC обробники ініціалізовано');

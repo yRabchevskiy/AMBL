@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { SvgZoomDirective } from '../../directives/svg/zoom.directive';
-import { Observable } from 'rxjs';
-import { selectAllUsers } from '../../state/selectors/users.selectors';
-
+import { selectStructureLoading, selectStructureName, selectStructureTree } from '../../state/selectors/structure.selectors';
+import * as StructureActions from '../../state/actions/structure.actions';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -13,15 +12,30 @@ import { selectAllUsers } from '../../state/selectors/users.selectors';
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
-export class HomeComponent  {
+export class HomeComponent {
   private store = inject(Store);
-  // Об'єкт для форми (згідно зі схемою Mongoose)
- 
 
-  data$: Observable<any[]> = this.store.select(selectAllUsers);
+  // Отримуємо назву структури (напр. "Головний офіс")
+  structureName$ = this.store.select(selectStructureName);
 
-  constructor() { }
+  // Отримуємо ієрархічне дерево
+  structureTree$ = this.store.select(selectStructureTree);
+
+  isLoading$ = this.store.select(selectStructureLoading);
+
+  ngOnInit() {
+    // Припустимо, ID ми беремо з параметрів роута або конфігу
+    const id = 'some-structure-id';
+    this.store.dispatch(StructureActions.loadStructure({ structureId: id }));
+  }
 
 
-  
+  createNewStructure() {
+    const name = prompt('Введіть назву нової структури:');
+    if (name) {
+      this.store.dispatch(StructureActions.createStructure({ name }));
+    }
+  }
+
+
 }

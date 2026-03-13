@@ -11,4 +11,19 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   selectFolder: () => ipcRenderer.invoke('select-folder'),
   readDirectory: (path: string) => ipcRenderer.invoke('read-directory', path),
+
+
+  getStructure: (id: string) => ipcRenderer.invoke('get-full-structure', id),
+  createUnion: (payload: any) => ipcRenderer.invoke('create-union', payload),
+  moveUnion: (payload: any) => ipcRenderer.invoke('move-union', payload),
+  deleteStructure: (id: string) => ipcRenderer.invoke('delete-structure', id),
+  createStructure: (payload: any) => ipcRenderer.invoke('create-structure', payload),
+  
+  addPosition: (payload: any) => ipcRenderer.invoke('add-position', payload),
+  deletePosition: (payload: any) => ipcRenderer.invoke('delete-position', payload),
+  assignUserToPosition: (payload: any) => ipcRenderer.invoke('assign-user-to-position', payload),
+
+  on: (channel: string, callback: (...args: any[]) => void) => {
+    ipcRenderer.on(channel, (_event, ...args) => callback(...args));
+  }
 });
