@@ -10,6 +10,7 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     restoreBackup: (name) => electron_1.ipcRenderer.invoke('restore-from-backup', name),
     selectFolder: () => electron_1.ipcRenderer.invoke('select-folder'),
     readDirectory: (path) => electron_1.ipcRenderer.invoke('read-directory', path),
+    getAllStructures: () => electron_1.ipcRenderer.invoke('get-all-structures'),
     getStructure: (id) => electron_1.ipcRenderer.invoke('get-full-structure', id),
     createUnion: (payload) => electron_1.ipcRenderer.invoke('create-union', payload),
     moveUnion: (payload) => electron_1.ipcRenderer.invoke('move-union', payload),

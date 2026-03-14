@@ -5,6 +5,7 @@ interface Window {
     getUsers: () => Promise<any[]>;
 
     // Структура
+    getAllStructures: () => Promise<any[]>;
     getStructure: (structureId: string) => Promise<any>;
     createUnion: (payload: { name: string, parentId: string | null, structureId: string }) => Promise<any>;
     moveUnion: (payload: { unionId: string, newParentId: string | null }) => Promise<any>;

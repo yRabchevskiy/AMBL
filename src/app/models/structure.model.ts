@@ -15,13 +15,14 @@ export interface IUnion {
 export interface IStructure {
   _id: string;
   name: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface IFullStructureResponse {
   _id: string;
   name: string;
-  createdAt: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
   unions: IUnion[];
 }

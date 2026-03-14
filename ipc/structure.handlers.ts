@@ -3,7 +3,18 @@ import { StructureModel, UnionModel } from "../models/structure.model";
 
 export function registerStructureHandlers() {
   // --- СТРУКТУРА ---
+  ipcMain.handle('get-all-structures', async () => {
+    try {
+      // Отримуємо всі структури без вкладених юнітів (тільки метадані)
+      const structures = await StructureModel.find()
+        .sort({ createdAt: -1 })
+        .lean();
 
+      return { success: true, data: structures };
+    } catch (e: any) {
+      return { success: false, error: e.message };
+    }
+  });
   // Видалити всю структуру та всі її підрозділи
   ipcMain.handle('delete-structure', async (_, structureId: string) => {
     try {
@@ -53,7 +64,9 @@ export function registerStructureHandlers() {
   ipcMain.handle('create-structure', async (_, payload: { name: string }) => {
     try {
       const newStructure = await StructureModel.create(payload);
-      return { success: true, data: newStructure };
+      const cleanData = JSON.parse(JSON.stringify(newStructure));
+      console.log('Створена структура:', cleanData);
+      return { success: true, data: cleanData };
     } catch (e: any) {
       return { success: false, error: e.message };
     }

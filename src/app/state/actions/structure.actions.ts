@@ -2,9 +2,20 @@ import { createAction, props } from '@ngrx/store';
 import { IFullStructureResponse, IStructure, IUnion } from '../../models/structure.model';
 
 // Завантаження даних
+export const loadAllStructures = createAction('[Structure] Load All');
+
+export const loadAllStructuresSuccess = createAction(
+  '[Structure] Load All Success', 
+  props<{ structures: IFullStructureResponse[] }>()
+);
+
+export const selectAndLoadStructure = createAction(
+  '[Structure] Select and Load',
+  props<{ structure: IFullStructureResponse }>()
+);
+
 export const loadStructure = createAction('[Structure] Load', props<{ structureId: string }>());
 export const loadStructureSuccess = createAction('[Structure] Load Success', props<{ data: IFullStructureResponse }>());
-export const loadStructureFailure = createAction('[Structure] Load Failure', props<{ error: string }>());
 
 export const deleteStructure = createAction(
   '[Structure] Delete',
@@ -18,7 +29,7 @@ export const createStructure = createAction(
 
 export const createStructureSuccess = createAction(
   '[Structure] Create Success', 
-  props<{ structure: IStructure }>()
+  props<{ structure: IFullStructureResponse }>()
 );
 
 
@@ -37,7 +48,7 @@ export const updateStructureName = createAction(
 
 export const updateStructureNameSuccess = createAction(
   '[Structure] Update Name Success',
-  props<{ structure: any }>()
+  props<{ structure: IFullStructureResponse }>()
 );
 
 // Підрозділи (Unions)

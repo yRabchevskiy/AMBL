@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { Router } from '@angular/router';
 import { from, of } from 'rxjs';
 import { map, mergeMap, catchError, tap } from 'rxjs/operators';
@@ -12,40 +12,58 @@ export class AuthEffects {
   private dbService = inject(DatabaseService);
   private router = inject(Router);
 
+  // --- НОВИЙ ЕФЕКТ: Відновлення сесії при старті ---
+  initAuth$ = createEffect(() => this.actions$.pipe(
+    ofType(ROOT_EFFECTS_INIT), // Спрацьовує один раз при запуску додатка
+    map(() => {
+      const data = localStorage.getItem('auth_data');
+      if (!data) return SettingsActions.logout();
+
+      const { currentUser, expiry } = JSON.parse(data);
+
+      // Перевіряємо, чи не протермінована сесія (2 години)
+      if (Date.now() > expiry) {
+        return SettingsActions.logout();
+      }
+
+      // Якщо все ок, повертаємо успішний логін у стейт
+      return SettingsActions.loginSuccess({ currentUser });
+    })
+  ));
+  
   // 1. Ефект логіну через IPC
+  // --- Твій існуючий логін ---
   login$ = createEffect(() => this.actions$.pipe(
     ofType(SettingsActions.login),
-    mergeMap(({ identity, password }) => {
-      debugger
-      return from(this.dbService.login(identity, password)).pipe(
+    mergeMap(({ identity, password }) => 
+      from(this.dbService.login(identity, password)).pipe(
         map(response => {
-          console.log(response);
           if (response.success) {
             return SettingsActions.loginSuccess({ currentUser: response.data });
           }
           return SettingsActions.loginFailure({ error: response.error });
         }),
-        catchError((err) => {
-          console.dir(err);
-          return of(SettingsActions.loginFailure({ error: err || 'Помилка з\'єднання з БД' }));
-        })
+        catchError((err) => of(SettingsActions.loginFailure({ error: err.message || 'Помилка БД' })))
       )
-    }
     )
   ));
 
-  // 2. Збереження в localStorage при успіху (з таймером на 2 години)
+  // --- Твій ефект збереження (додано логіку перенаправлення тільки при ручному логіні) ---
   persistUser$ = createEffect(() => this.actions$.pipe(
     ofType(SettingsActions.loginSuccess),
     tap(({ currentUser }) => {
-      const expiry = Date.now() + 2 * 60 * 60 * 1000; // Поточний час + 2 години в мс
-      const authData = { currentUser, expiry };
-      localStorage.setItem('auth_data', JSON.stringify(authData));
-      this.router.navigate(['/home']);
+      // Зберігаємо лише якщо даних ще немає або вони змінилися
+      const expiry = Date.now() + 2 * 60 * 60 * 1000;
+      localStorage.setItem('auth_data', JSON.stringify({ currentUser, expiry }));
+      
+      // Перенаправляємо на home, ТІЛЬКИ якщо ми зараз на сторінці логіну
+      if (this.router.url === '/login') {
+        this.router.navigate(['/home']);
+      }
     })
   ), { dispatch: false });
 
-  // 3. Ефект виходу (Logout)
+  // --- Твій ефект виходу ---
   logout$ = createEffect(() => this.actions$.pipe(
     ofType(SettingsActions.logout),
     tap(() => {

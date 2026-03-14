@@ -14,6 +14,18 @@ const electron_1 = require("electron");
 const structure_model_1 = require("../models/structure.model");
 function registerStructureHandlers() {
     // --- СТРУКТУРА ---
+    electron_1.ipcMain.handle('get-all-structures', () => __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Отримуємо всі структури без вкладених юнітів (тільки метадані)
+            const structures = yield structure_model_1.StructureModel.find()
+                .sort({ createdAt: -1 })
+                .lean();
+            return { success: true, data: structures };
+        }
+        catch (e) {
+            return { success: false, error: e.message };
+        }
+    }));
     // Видалити всю структуру та всі її підрозділи
     electron_1.ipcMain.handle('delete-structure', (_, structureId) => __awaiter(this, void 0, void 0, function* () {
         try {
@@ -56,7 +68,19 @@ function registerStructureHandlers() {
     electron_1.ipcMain.handle('create-structure', (_, payload) => __awaiter(this, void 0, void 0, function* () {
         try {
             const newStructure = yield structure_model_1.StructureModel.create(payload);
-            return { success: true, data: newStructure };
+            const cleanData = JSON.parse(JSON.stringify(newStructure));
+            console.log('Створена структура:', cleanData);
+            return { success: true, data: cleanData };
+        }
+        catch (e) {
+            return { success: false, error: e.message };
+        }
+    }));
+    electron_1.ipcMain.handle('update-structure-name', (_, payload) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            const updated = yield structure_model_1.StructureModel.findByIdAndUpdate(payload.structureId, { name: payload.name }, { new: true } // Повертає вже оновлений об'єкт
+            ).lean();
+            return { success: true, data: updated };
         }
         catch (e) {
             return { success: false, error: e.message };

@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   readDirectory: (path: string) => ipcRenderer.invoke('read-directory', path),
 
 
+  getAllStructures: () => ipcRenderer.invoke('get-all-structures'),
   getStructure: (id: string) => ipcRenderer.invoke('get-full-structure', id),
   createUnion: (payload: any) => ipcRenderer.invoke('create-union', payload),
   moveUnion: (payload: any) => ipcRenderer.invoke('move-union', payload),

@@ -4,16 +4,20 @@ import { IStructureState } from '../reducers/structure.reducer';
 // Селектор, який будує дерево (рекурсивно)
 export const selectStructureState = createFeatureSelector<IStructureState>('structure');
 
-// Селектор для отримання назви компанії/проєкту
-export const selectStructureName = createSelector(
+export const selectAllAvailableStructures = createSelector(
   selectStructureState,
-  (state) => state.name
+  (state) => state.allStructures
 );
 
+
+export const selectSelectedStructure = createSelector(
+  selectStructureState,
+  (state) => state.selectedStructure
+);
 // Базовий селектор для всіх підрозділів (плаский масив)
 export const selectAllUnions = createSelector(
-  selectStructureState,
-  state => state.unions
+  selectSelectedStructure,
+  (selectedStructure) => selectedStructure?.unions || []
 );
 
 export const selectStructureLoading = createSelector(

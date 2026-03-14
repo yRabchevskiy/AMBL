@@ -4,12 +4,14 @@ import { SettingsActions } from '../actions/settings.actions';
 
 export interface IAuthState {
   currentUser: IUser | null;
+  isAuthenticated: boolean;
   error: string | null;
   loading: boolean;
 }
 
 export const initialAuthState: IAuthState = {
   currentUser: null,
+  isAuthenticated: false,
   error: null,
   loading: false
 };
@@ -28,15 +30,15 @@ export const initialSettingsState: ISettingsState = {
 export const settingsReducer = createReducer(
   initialSettingsState,
   on(SettingsActions.routeChanged, (state, { url }) => ({ ...state, activeRoute: url })),
-  on(SettingsActions.login, state => ({ ...state, auth: { ...state.auth, loading: true, error: null } })),
+  on(SettingsActions.login, state => ({ ...state, auth: { ...state.auth, loading: true, error: null, isAuthenticated: false } })),
   on(SettingsActions.loginSuccess, (state, { currentUser }) => ({
     ...state,
-    auth: { ...state.auth, currentUser, loading: false, error: null }
+    auth: { ...state.auth, currentUser, loading: false, error: null, isAuthenticated: true }
   })),
   on(SettingsActions.loginFailure, (state, { error }) => {
     return ({
     ...state,
-    auth: { ...state.auth, loading: false, error }
+    auth: { ...state.auth, loading: false, error, isAuthenticated: false }
   })
   }),
   on(SettingsActions.logout, () => initialSettingsState)

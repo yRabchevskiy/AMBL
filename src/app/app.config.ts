@@ -9,6 +9,7 @@ import { AuthEffects } from './state/effects/auth.effects';
 import { FileEffects } from './state/effects/file.effects';
 import { provideRouterStore } from '@ngrx/router-store'; // Імпортуй вбудований редьюсер
 import { appReducers, appState } from './state/app.state';
+import { StructureEffects } from './state/effects/structure.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +26,7 @@ export const appConfig: ApplicationConfig = {
       }
     ),
     provideRouterStore(),
-    provideEffects([UserEffects, AuthEffects, FileEffects]),
+    provideEffects([UserEffects, AuthEffects, FileEffects, StructureEffects]),
 
     // Підключаємо Redux DevTools (дуже корисно для дебагу в Chrome/Electron)
     provideStoreDevtools({

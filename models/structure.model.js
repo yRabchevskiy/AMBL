@@ -4,7 +4,7 @@ exports.UnionModel = exports.StructureModel = void 0;
 const mongoose_1 = require("mongoose");
 // Схема структури (Проєкт/Компанія)
 const structureSchema = new mongoose_1.Schema({
-    name: { type: String, required: true }
+    name: { type: String, required: true, trim: true }
 }, { timestamps: true });
 exports.StructureModel = (0, mongoose_1.model)('Structure', structureSchema);
 // Схема підрозділу (Union)

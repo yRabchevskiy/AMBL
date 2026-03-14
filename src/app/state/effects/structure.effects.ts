@@ -1,23 +1,46 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
-import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
+import { map, mergeMap, catchError, switchMap, take } from 'rxjs/operators';
 import * as StructureActions from '../actions/structure.actions';
+import { IStructure } from '../../models/structure.model';
+import { union } from 'd3';
 
 @Injectable()
 export class StructureEffects {
   private actions$ = inject(Actions);
 
+  loadAllStructures$ = createEffect(() => this.actions$.pipe(
+    ofType(StructureActions.loadAllStructures),
+    switchMap(() =>
+      from(window.electronAPI.invoke('get-all-structures')).pipe(
+        map(res => res.success
+          ? StructureActions.loadAllStructuresSuccess({ structures: res.data.map((s: IStructure) => ({ ...s, unions: [] })) })
+          : StructureActions.operationFailure({ error: res.error })
+        ),
+        catchError(err => of(StructureActions.operationFailure({ error: err.message })))
+      )
+    )
+  ));
+
   // Завантаження всієї структури
   loadStructure$ = createEffect(() => this.actions$.pipe(
-    ofType(StructureActions.loadStructure),
-    switchMap(({ structureId }) =>
-      from(window.electronAPI.getStructure(structureId)).pipe(
-        map(res => res.success
-          ? StructureActions.loadStructureSuccess({ data: res.data })
-          : StructureActions.loadStructureFailure({ error: res.error })
-        ),
-        catchError(err => of(StructureActions.loadStructureFailure({ error: err.message })))
+    // Слухаємо новий екшен "Вибрати та завантажити"
+    ofType(StructureActions.selectAndLoadStructure),
+
+    // Використовуємо switchMap: якщо користувач швидко клацне на іншу структуру, 
+    // попередній запит буде скасовано
+    switchMap(({ structure }) =>
+      from(window.electronAPI.getStructure(structure._id)).pipe(
+        map(res => {
+          if (res.success) {
+            // Повертаємо LoadSuccess з повними даними (уніони і т.д.)
+            return StructureActions.loadStructureSuccess({ data: res.data });
+          } else {
+            return StructureActions.operationFailure({ error: res.error });
+          }
+        }),
+        catchError(err => of(StructureActions.operationFailure({ error: err.message })))
       )
     )
   ));
@@ -51,11 +74,16 @@ export class StructureEffects {
   createStructure$ = createEffect(() => this.actions$.pipe(
     ofType(StructureActions.createStructure),
     mergeMap(({ name }) =>
+      // Додаємо звичайний Promise.resolve для тесту, щоб зрозуміти чи проблема в IPC
       from(window.electronAPI.createStructure({ name })).pipe(
-        map(res => res.success
-          ? StructureActions.createStructureSuccess({ structure: res.data })
-          : StructureActions.operationFailure({ error: res.error })
-        ),
+        take(1), // Гарантуємо завершення після першої відповіді
+        map(res => {
+          console.log('Відповідь в ефекті:', res); // Перевір консоль браузера
+          if (res.success) {
+            return StructureActions.createStructureSuccess({ structure: res.data });
+          }
+          return StructureActions.operationFailure({ error: res.error });
+        }),
         catchError(err => of(StructureActions.operationFailure({ error: err.message })))
       )
     )

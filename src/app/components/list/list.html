@@ -1,0 +1,10 @@
+@if(items && items.length) {
+  <button (click)="addItem()">Add Item</button>
+  <ul>
+    @for (item of items; track $index) {
+    <li (click)="onItemClick(item)">{{ item.name }}</li>
+    }
+  </ul>
+} @else {
+<p>Немає елементів для відображення.</p>
+}

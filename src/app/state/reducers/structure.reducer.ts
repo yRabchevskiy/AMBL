@@ -1,76 +1,95 @@
 import { createReducer, on } from '@ngrx/store';
-import { IUnion } from '../../models/structure.model';
+import { IFullStructureResponse, IStructure } from '../../models/structure.model';
 import * as StructureActions from '../actions/structure.actions';
 
 export interface IStructureState {
-  structureId: string | null;
-  name: string | null;
-  unions: IUnion[];
+  allStructures: IFullStructureResponse[]; // Масив всіх структур (компаній/проєктів)
+  selectedStructure: IFullStructureResponse | null;
   loading: boolean;
   error: string | null;
 }
 
 export const initialStructureState: IStructureState = {
-  structureId: null,
-  name: null,
-  unions: [],
+  allStructures: [],
+  selectedStructure: null,
   loading: false,
   error: null
 };
 
 export const structureReducer = createReducer(
   initialStructureState,
-
-  on(StructureActions.loadStructure, state => ({ ...state, loading: true })),
-
-  on(StructureActions.loadStructureSuccess, (state, { data }) => ({
+  on(StructureActions.loadAllStructuresSuccess, (state, { structures }) => ({
     ...state,
-    structureId: data._id,
-    name: data.name,
-    unions: data.unions, // Беремо масив з об'єкта
+    allStructures: structures,
+    selectedStructure: null,
     loading: false,
     error: null
   })),
 
+  on(StructureActions.selectAndLoadStructure, (state, { structure }) => ({
+    ...state,
+    selectedStructure: structure,
+    loading: true,
+    error: null
+  })),
+  on(StructureActions.loadStructure, state => ({ ...state, loading: true, error: null })),
+  on(StructureActions.loadStructureSuccess, (state, { data }) => ({
+    ...state,
+    selectedStructure: data,
+    loading: false,
+    error: null
+  })),
+  on(StructureActions.operationFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  })),
+
   on(StructureActions.createUnionSuccess, (state, { union }) => ({
     ...state,
-    unions: [...state.unions, union]
+    // unions: [...state.unions, union]
   })),
 
   // Найважливіший момент: оновлюємо тільки один змінений підрозділ у масиві
   on(StructureActions.updateUnionSuccess, (state, { union }) => ({
     ...state,
-    unions: state.unions.map(u => u._id === union._id ? union : u)
+    // unions: state.unions.map(u => u._id === union._id ? union : u)
   })),
 
-  on(StructureActions.loadStructureFailure, StructureActions.operationFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  })),
+
 
   on(StructureActions.deleteStructureSuccess, () => ({
     ...initialStructureState // Скидаємо все до початкового стану (unions: [], name: null, etc.)
   })),
 
-  on(StructureActions.createStructureSuccess, (state, { structure }) => ({
-    ...state,
-    structureId: structure._id,
-    name: structure.name,
-    unions: [], // Нова структура завжди порожня
-    loading: false,
-    error: null
-  })),
+  on(StructureActions.createStructureSuccess, (state, { structure }) => {
+    return ({
+      ...state,
+      allStructures: [...state.allStructures, structure], // Додаємо нову структуру в список
+      selectedStructure: structure,
+      loading: false,
+      error: null
+    })
+  }),
 
-  on(StructureActions.updateStructureNameSuccess, (state, { structure }) => ({
-    ...state,
-    name: structure.name,
-    loading: false
-  })),
-
-  on(StructureActions.operationFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  }))
+  on(StructureActions.updateStructureNameSuccess, (state, { structure }) => {
+    let _selected = null;
+    const _all = state.allStructures.map(s => {
+      let _s = null;
+      if (s._id === structure._id) {
+        _s = structure;
+        _selected = structure;
+      } else {
+        _s = s;
+      }
+      return _s;
+    });
+    return ({
+      ...state,
+      allStructures: _all,
+      selectedStructure: _selected,
+      loading: false,
+      error: null
+    })
+  }),
 );

@@ -1,6 +1,34 @@
-<svg width="100%" height="100%" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg" appSvgZoom [minZoom]="0.1" [maxZoom]="50">
+@if(isLoading$ | async) {
+<app-loading />
+} @else {
+@if((data$ | async)?.length === 0) {
+<div>
+  <button (click)="createNewStructure()">Create New Structure</button>
+</div>
+} @else {
+<h1>{{ (selectedStructure$ | async)?.name }}</h1>
+<app-list [items]="(data$ | async) || []" (onAdd)="createNewStructure()" (itemClick)="onSelectStructure($event)"></app-list>
+}
+
+
+<!-- <svg width="100%" height="100%" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg" appSvgZoom [minZoom]="0.1"
+  [maxZoom]="50">
   <g>
-<rect width="0.01" height="0.01" fill="red" />
+    <rect width="0.01" height="0.01" fill="red" />
   </g>
-  
-</svg>
+
+</svg> -->
+}
+
+@if (showDialog) {
+<div class="dialog-overlay">
+  <form class="dialog" [formGroup]="newStructureForm">
+    <h2>Створити нову структуру</h2>
+    <input type="text" formControlName="name" placeholder="Назва структури" />
+    <div class="dialog-actions">
+      <button type="submit" (click)="createStructure()">Створити</button>
+      <button (click)="showDialog = false">Скасувати</button>
+    </div>
+  </form> 
+</div>
+}
