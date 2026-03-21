@@ -1,10 +1,15 @@
-@if(items && items.length) {
-  <button (click)="addItem()">Add Item</button>
-  <ul>
+<div class="a-list-container">
+  @if(items && items.length) {
+  <div class="a-list-header">
+    <div>{{ selectedItem?.name }}</div>
+    <button (click)="addItem()">Add Item</button>
+  </div>
+  <div class="a-list-body">
     @for (item of items; track $index) {
-    <li (click)="onItemClick(item)">{{ item.name }}</li>
+    <div class="a-list-item" [ngClass]="{'a-list-item-selected': selectedItem?.name === item?.name}" (click)="onItemClick(item)">{{ item?.name }}</div>
     }
-  </ul>
-} @else {
-<p>Немає елементів для відображення.</p>
-}
+  </div>
+  } @else {
+  <div class="a-list-empty">Немає елементів для відображення.</div>
+  }
+</div>

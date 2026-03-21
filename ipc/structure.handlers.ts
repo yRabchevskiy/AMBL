@@ -1,5 +1,6 @@
 import { ipcMain } from "electron";
 import { StructureModel, UnionModel } from "../models/structure.model";
+import { simplifyObject } from "./general.helpers";
 
 export function registerStructureHandlers() {
   // --- СТРУКТУРА ---
@@ -9,8 +10,9 @@ export function registerStructureHandlers() {
       const structures = await StructureModel.find()
         .sort({ createdAt: -1 })
         .lean();
+      const cleanData = JSON.parse(JSON.stringify(structures));
 
-      return { success: true, data: structures };
+      return { success: true, data: cleanData };
     } catch (e: any) {
       return { success: false, error: e.message };
     }
@@ -49,12 +51,20 @@ export function registerStructureHandlers() {
         return { success: false, error: 'Структуру не знайдено' };
       }
 
+      // Формуємо фінальний об'єкт
+      const rawData = {
+        ...structure,
+        unions: unions || []
+      };
+
+      // МАГІЯ ТУТ: 
+      // JSON.stringify перетворює ВСІ ObjectId (на будь-якій глибині) на String.
+      // JSON.parse повертає чистий об'єкт, який Electron IPC передасть без спотворень.
+      const cleanData = JSON.parse(JSON.stringify(rawData));
+
       return {
         success: true,
-        data: {
-          ...structure, // Тут будуть _id, name, createdAt
-          unions: unions // Масив підрозділів
-        }
+        data: cleanData
       };
     } catch (e: any) {
       return { success: false, error: e.message };
@@ -89,10 +99,23 @@ export function registerStructureHandlers() {
   // --- ПІДРОЗДІЛИ (UNIONS) ---
 
   // Створити підрозділ
-  ipcMain.handle('create-union', async (_, payload: { name: string, parentId: string | null, structureId: string }) => {
+  ipcMain.handle('create-union', async (_, payload: { name: string, parentId: string | null, structureId: string, positions: any[] }) => {
     try {
       const newUnion = await UnionModel.create(payload);
-      return { success: true, data: newUnion };
+      const cleanData = JSON.parse(JSON.stringify(newUnion.toObject()));
+
+      console.log('Створений підрозділ (очищений):', cleanData);
+      return { success: true, data: cleanData };
+    } catch (e: any) {
+      console.log('Помилка при створенні підрозділу:', e);
+      return { success: false, error: e.message };
+    }
+  });
+
+  ipcMain.handle('delete-union', async (_, unionId: string) => {
+    try {
+      await UnionModel.findByIdAndDelete(unionId);
+      return { success: true };
     } catch (e: any) {
       return { success: false, error: e.message };
     }
@@ -157,3 +180,4 @@ export function registerStructureHandlers() {
   });
 
 }
+

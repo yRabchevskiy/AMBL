@@ -7,8 +7,14 @@ interface Window {
     // Структура
     getAllStructures: () => Promise<any[]>;
     getStructure: (structureId: string) => Promise<any>;
+   // ПІДРОЗДІЛИ (Unions)
     createUnion: (payload: { name: string, parentId: string | null, structureId: string }) => Promise<any>;
+    // ДОДАНО: Оновлення (наприклад, зміна назви)
+    updateUnion: (payload: { unionId: string, name: string }) => Promise<any>;
+    // ДОДАНО: Видалення
+    deleteUnion: (unionId: string) => Promise<any>;
     moveUnion: (payload: { unionId: string, newParentId: string | null }) => Promise<any>;
+    
     deleteStructure: (structureId: string) => Promise<any>;
     createStructure: (payload: { name: string }) => Promise<any>;
 

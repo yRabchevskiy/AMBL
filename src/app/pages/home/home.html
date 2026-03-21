@@ -6,8 +6,18 @@
   <button (click)="createNewStructure()">Create New Structure</button>
 </div>
 } @else {
-<h1>{{ (selectedStructure$ | async)?.name }}</h1>
-<app-list [items]="(data$ | async) || []" (onAdd)="createNewStructure()" (itemClick)="onSelectStructure($event)"></app-list>
+<div class="a-home-content">
+  @if(selectedStructure$ | async; as structure) {
+    <app-svg-pallet class="a-svg-container" [dataItem]="structure"></app-svg-pallet>
+  } @else {
+    <div class="a-svg-container">
+      <span class="a-empty-message">Виберіть структуру для відображення</span>
+    </div>
+  }
+  <app-list class="a-list" [items]="(data$ | async) || []" [selectedItem]="selectedStructure$ | async" (onAdd)="createNewStructure()"
+    (itemClick)="onSelectStructure($event)"></app-list>
+</div>
+
 }
 
 
@@ -29,6 +39,6 @@
       <button type="submit" (click)="createStructure()">Створити</button>
       <button (click)="showDialog = false">Скасувати</button>
     </div>
-  </form> 
+  </form>
 </div>
 }

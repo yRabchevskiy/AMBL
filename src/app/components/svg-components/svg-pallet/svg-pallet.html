@@ -1,0 +1,25 @@
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" appSvgZoom [minZoom]="0.2"
+  [maxZoom]="10">
+  <g id="a-zoom-container">
+    @if (dataItem.unions && dataItem.unions.length) {
+    @for (item of dataItem.unions; track $index) {
+    <app-svg-union [union]="item"></app-svg-union>
+    }
+    } @else {
+    <text x="50%" y="50%" text-anchor="middle" fill="#888" font-size="0.05">Немає підрозділів для відображення</text>
+    }
+
+  </g>
+</svg>
+<div class="a-action-buttons">
+  <button (click)="createUnion()">+</button>
+</div>
+
+<app-dialog [visible]="dialogVisible" (onClose)="onCloseDialog()" (onSave)="onSaveUnion()">
+  <form aDialogBody [formGroup]="unionForm">
+    <div class="a-field m-top-auto">
+      <label class="a-field-label" for="name">Union Name:</label>
+      <input class="a-field-input" type="text" formControlName="name" id="name">
+    </div>
+  </form>
+</app-dialog>

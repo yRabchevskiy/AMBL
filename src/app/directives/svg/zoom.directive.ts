@@ -17,10 +17,9 @@ export class SvgZoomDirective implements OnInit {
     
     // Шукаємо групу <g>, яку будемо рухати. 
     // Якщо її немає, зум працюватиме некоректно (координати будуть "стрибати").
-    const container = svg.select('g');
-
+    const container = svg.select('#a-zoom-container');
     if (container.empty()) {
-      console.warn('SvgZoomDirective: В середині <svg> не знайдено елемента <g>.');
+      console.log('SvgZoomDirective: В середині <svg> не знайдено елемента <g>.');
       return;
     }
 

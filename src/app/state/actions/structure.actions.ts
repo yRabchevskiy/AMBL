@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IFullStructureResponse, IStructure, IUnion } from '../../models/structure.model';
+import { ICreateUnion, IFullStructureResponse, IStructure, IUnion } from '../../models/structure.model';
 
 // Завантаження даних
 export const loadAllStructures = createAction('[Structure] Load All');
@@ -52,7 +52,7 @@ export const updateStructureNameSuccess = createAction(
 );
 
 // Підрозділи (Unions)
-export const createUnion = createAction('[Structure] Create Union', props<{ payload: { name: string, parentId: string | null, structureId: string } }>());
+export const createUnion = createAction('[Structure] Create Union', props<{ union: ICreateUnion }>());
 export const createUnionSuccess = createAction('[Structure] Create Union Success', props<{ union: IUnion }>());
 
 export const moveUnion = createAction('[Structure] Move Union', props<{ unionId: string, newParentId: string | null }>());
@@ -64,6 +64,16 @@ export const assignUser = createAction('[Structure] Assign User', props<{ unionI
 
 // Універсальне оновлення одного підрозділу в стейті
 export const updateUnionSuccess = createAction('[Structure] Update Union Success', props<{ union: IUnion }>());
+// 1. Початок видалення (викликається з компонента)
+export const deleteUnion = createAction(
+  '[Structure] Delete Union',
+  props<{ unionId: string; structureId: string }>()
+);
 
+// 2. Успішне завершення (викликається з ефекту)
+export const deleteUnionSuccess = createAction(
+  '[Structure] Delete Union Success',
+  props<{ unionId: string; structureId: string }>()
+);
 // Помилки операцій
 export const operationFailure = createAction('[Structure] Operation Failure', props<{ error: string }>());

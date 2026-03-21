@@ -10,6 +10,8 @@ import { FileEffects } from './state/effects/file.effects';
 import { provideRouterStore } from '@ngrx/router-store'; // Імпортуй вбудований редьюсер
 import { appReducers, appState } from './state/app.state';
 import { StructureEffects } from './state/effects/structure.effects';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +27,18 @@ export const appConfig: ApplicationConfig = {
         }
       }
     ),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+        options: {
+          cssLayer: {
+            name: 'primeng',
+            order: 'styles, primeng' // Your styles after primeng
+          }
+        }
+      }
+
+    }),
     provideRouterStore(),
     provideEffects([UserEffects, AuthEffects, FileEffects, StructureEffects]),
 

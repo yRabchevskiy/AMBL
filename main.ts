@@ -118,7 +118,9 @@ function createSplashWindow() {
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 1200, height: 800, show: false,
+    width: 1200, 
+    height: 800,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true
@@ -133,6 +135,9 @@ function createMainWindow() {
 
   mainWindow.once('ready-to-show', () => {
     if (splashWindow) splashWindow.close();
+    
+    // Спочатку максимізуємо, потім показуємо
+    mainWindow?.maximize(); 
     mainWindow?.show();
   });
 }

@@ -15,10 +15,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   getAllStructures: () => ipcRenderer.invoke('get-all-structures'),
   getStructure: (id: string) => ipcRenderer.invoke('get-full-structure', id),
-  createUnion: (payload: any) => ipcRenderer.invoke('create-union', payload),
-  moveUnion: (payload: any) => ipcRenderer.invoke('move-union', payload),
   deleteStructure: (id: string) => ipcRenderer.invoke('delete-structure', id),
   createStructure: (payload: any) => ipcRenderer.invoke('create-structure', payload),
+
+  // Підрозділи (Unions)
+  createUnion: (payload: any) => ipcRenderer.invoke('create-union', payload),
+  updateUnion: (payload: any) => ipcRenderer.invoke('update-union', payload), // Додано
+  deleteUnion: (id: string) => ipcRenderer.invoke('delete-union', id),       // Додано
+  moveUnion: (payload: any) => ipcRenderer.invoke('move-union', payload),
   
   addPosition: (payload: any) => ipcRenderer.invoke('add-position', payload),
   deletePosition: (payload: any) => ipcRenderer.invoke('delete-position', payload),

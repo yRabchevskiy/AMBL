@@ -20,7 +20,8 @@ function registerStructureHandlers() {
             const structures = yield structure_model_1.StructureModel.find()
                 .sort({ createdAt: -1 })
                 .lean();
-            return { success: true, data: structures };
+            const cleanData = JSON.parse(JSON.stringify(structures));
+            return { success: true, data: cleanData };
         }
         catch (e) {
             return { success: false, error: e.message };
@@ -55,10 +56,15 @@ function registerStructureHandlers() {
             if (!structure) {
                 return { success: false, error: 'Структуру не знайдено' };
             }
+            // Формуємо фінальний об'єкт
+            const rawData = Object.assign(Object.assign({}, structure), { unions: unions || [] });
+            // МАГІЯ ТУТ: 
+            // JSON.stringify перетворює ВСІ ObjectId (на будь-якій глибині) на String.
+            // JSON.parse повертає чистий об'єкт, який Electron IPC передасть без спотворень.
+            const cleanData = JSON.parse(JSON.stringify(rawData));
             return {
                 success: true,
-                data: Object.assign(Object.assign({}, structure), { unions: unions // Масив підрозділів
-                 })
+                data: cleanData
             };
         }
         catch (e) {
@@ -91,7 +97,19 @@ function registerStructureHandlers() {
     electron_1.ipcMain.handle('create-union', (_, payload) => __awaiter(this, void 0, void 0, function* () {
         try {
             const newUnion = yield structure_model_1.UnionModel.create(payload);
-            return { success: true, data: newUnion };
+            const cleanData = JSON.parse(JSON.stringify(newUnion.toObject()));
+            console.log('Створений підрозділ (очищений):', cleanData);
+            return { success: true, data: cleanData };
+        }
+        catch (e) {
+            console.log('Помилка при створенні підрозділу:', e);
+            return { success: false, error: e.message };
+        }
+    }));
+    electron_1.ipcMain.handle('delete-union', (_, unionId) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield structure_model_1.UnionModel.findByIdAndDelete(unionId);
+            return { success: true };
         }
         catch (e) {
             return { success: false, error: e.message };

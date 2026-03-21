@@ -9,11 +9,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ListComponent {
   @Input() items: any[] = [];
-  @Input() selectedItemId: string = '';
+  @Input() selectedItem: any;
   @Output() itemClick = new EventEmitter<any>();
   @Output() onAdd = new EventEmitter<any>();
 
   onItemClick(item: any) {
+    if (this.selectedItem && this.selectedItem._id === item._id) { return }
     this.itemClick.emit(item);
   }
 

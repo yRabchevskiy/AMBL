@@ -26,3 +26,12 @@ export interface IFullStructureResponse {
   updatedAt?: string | Date;
   unions: IUnion[];
 }
+
+
+// ---------------------------------------
+export interface ICreateUnion {
+  name: string;
+  parentId: string | null;
+  structureId: string;
+  positions: IPosition[];
+}

@@ -150,7 +150,9 @@ function createSplashWindow() {
 }
 function createMainWindow() {
     mainWindow = new electron_1.BrowserWindow({
-        width: 1200, height: 800, show: false,
+        width: 1200,
+        height: 800,
+        show: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true
@@ -165,6 +167,8 @@ function createMainWindow() {
     mainWindow.once('ready-to-show', () => {
         if (splashWindow)
             splashWindow.close();
+        // Спочатку максимізуємо, потім показуємо
+        mainWindow === null || mainWindow === void 0 ? void 0 : mainWindow.maximize();
         mainWindow === null || mainWindow === void 0 ? void 0 : mainWindow.show();
     });
 }

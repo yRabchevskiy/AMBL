@@ -12,10 +12,13 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     readDirectory: (path) => electron_1.ipcRenderer.invoke('read-directory', path),
     getAllStructures: () => electron_1.ipcRenderer.invoke('get-all-structures'),
     getStructure: (id) => electron_1.ipcRenderer.invoke('get-full-structure', id),
-    createUnion: (payload) => electron_1.ipcRenderer.invoke('create-union', payload),
-    moveUnion: (payload) => electron_1.ipcRenderer.invoke('move-union', payload),
     deleteStructure: (id) => electron_1.ipcRenderer.invoke('delete-structure', id),
     createStructure: (payload) => electron_1.ipcRenderer.invoke('create-structure', payload),
+    // Підрозділи (Unions)
+    createUnion: (payload) => electron_1.ipcRenderer.invoke('create-union', payload),
+    updateUnion: (payload) => electron_1.ipcRenderer.invoke('update-union', payload), // Додано
+    deleteUnion: (id) => electron_1.ipcRenderer.invoke('delete-union', id), // Додано
+    moveUnion: (payload) => electron_1.ipcRenderer.invoke('move-union', payload),
     addPosition: (payload) => electron_1.ipcRenderer.invoke('add-position', payload),
     deletePosition: (payload) => electron_1.ipcRenderer.invoke('delete-position', payload),
     assignUserToPosition: (payload) => electron_1.ipcRenderer.invoke('assign-user-to-position', payload),

@@ -45,16 +45,73 @@ export const structureReducer = createReducer(
     error
   })),
 
-  on(StructureActions.createUnionSuccess, (state, { union }) => ({
-    ...state,
-    // unions: [...state.unions, union]
-  })),
+  on(StructureActions.createUnionSuccess, (state, { union }) => {
+    // 1. Оновлюємо вибрану структуру (якщо вона зараз активна)
+    const updatedSelected = state.selectedStructure && state.selectedStructure._id === union.structureId
+      ? {
+        ...state.selectedStructure,
+        unions: [...(state.selectedStructure.unions || []), union]
+      }
+      : state.selectedStructure;
+
+    // 2. Оновлюємо масив усіх структур
+    const updatedAll = state.allStructures.map(structure => {
+      if (structure._id === union.structureId) {
+        return {
+          ...structure,
+          unions: [...(structure.unions || []), union]
+        };
+      }
+      return structure;
+    });
+
+    return {
+      ...state,
+      selectedStructure: updatedSelected,
+      allStructures: updatedAll
+    };
+  }),
 
   // Найважливіший момент: оновлюємо тільки один змінений підрозділ у масиві
-  on(StructureActions.updateUnionSuccess, (state, { union }) => ({
-    ...state,
-    // unions: state.unions.map(u => u._id === union._id ? union : u)
-  })),
+  on(StructureActions.updateUnionSuccess, (state, { union }) => {
+    const updateUnionsList = (unions: any[]) =>
+      unions.map(u => u._id === union._id ? { ...u, ...union } : u);
+
+    return {
+      ...state,
+      // Оновлюємо у вибраній структурі
+      selectedStructure: state.selectedStructure && state.selectedStructure._id === union.structureId
+        ? { ...state.selectedStructure, unions: updateUnionsList(state.selectedStructure.unions || []) }
+        : state.selectedStructure,
+
+      // Оновлюємо у загальному списку структур
+      allStructures: state.allStructures.map(s =>
+        s._id === union.structureId
+          ? { ...s, unions: updateUnionsList(s.unions || []) }
+          : s
+      )
+    };
+  }),
+
+  on(StructureActions.updateUnionSuccess, (state, { union }) => {
+    const updateUnionsList = (unions: any[]) =>
+      unions.map(u => u._id === union._id ? { ...u, ...union } : u);
+
+    return {
+      ...state,
+      // Оновлюємо у вибраній структурі
+      selectedStructure: state.selectedStructure && state.selectedStructure._id === union.structureId
+        ? { ...state.selectedStructure, unions: updateUnionsList(state.selectedStructure.unions || []) }
+        : state.selectedStructure,
+
+      // Оновлюємо у загальному списку структур
+      allStructures: state.allStructures.map(s =>
+        s._id === union.structureId
+          ? { ...s, unions: updateUnionsList(s.unions || []) }
+          : s
+      )
+    };
+  }),
 
 
 

@@ -92,12 +92,28 @@ export class StructureEffects {
   // Створення підрозділу (Union)
   createUnion$ = createEffect(() => this.actions$.pipe(
     ofType(StructureActions.createUnion),
-    mergeMap(({ payload }) =>
-      from(window.electronAPI.createUnion(payload)).pipe(
-        map(res => res.success
-          ? StructureActions.createUnionSuccess({ union: res.data })
-          : StructureActions.operationFailure({ error: res.error })
+    mergeMap(({ union }) => {
+      return from(window.electronAPI.createUnion(union)).pipe(
+        map(res => {
+          return res.success
+            ? StructureActions.createUnionSuccess({ union: res.data })
+            : StructureActions.operationFailure({ error: res.error })
+        }
         )
+      )
+    }
+    )
+  ));
+
+  deleteUnion$ = createEffect(() => this.actions$.pipe(
+    ofType(StructureActions.deleteUnion), // Тепер помилка зникне
+    mergeMap(({ unionId, structureId }) =>
+      from(window.electronAPI.deleteUnion(unionId)).pipe(
+        map(res => res.success
+          ? StructureActions.deleteUnionSuccess({ unionId, structureId })
+          : StructureActions.operationFailure({ error: res.error })
+        ),
+        catchError(err => of(StructureActions.operationFailure({ error: err.message })))
       )
     )
   ));
