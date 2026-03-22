@@ -56,22 +56,41 @@ a {
   height: 40px;
 }
 
-.a-button {
+.a-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   padding: 8px 16px;
-  background-color: var(--a-accent-red);
-  color: var(--a-white);
-  border: 2px solid var(--a-accent-red);
+  border: 2px solid;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   height: 40px;
   min-width: 148px;
   font-size: 16px;
+}
+
+.a-button {
+  @extend .a-btn;
+  background-color: var(--a-accent-red);
+  color: var(--a-white);
+  border-color: var(--a-accent-red);
+
+  &:not(:disabled):hover {
+    background-color: var(--a-hover-red);
+  }
+}
+
+.a-button-secondary {
+  @extend .a-btn;
+  background-color: transparent;
+  color: var(--a-black);
+  border-color: var(--a-accent-red);
+
+  &:not(:disabled):hover {
+    border-color: var(--a-hover-red);
+  }
 }
 
 .m-top-auto {

@@ -8,6 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 })
 export class ADialogComponent {
   @Input() visible: boolean = false;
+  @Input() label: string = '';
   @Output() onClose = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<void>();
 

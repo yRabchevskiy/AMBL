@@ -10,6 +10,9 @@ export interface IUnion {
   parentId: string | null;
   structureId: string;
   positions: IPosition[];
+
+  x?: number;
+  y?: number;
 }
 
 export interface IStructure {

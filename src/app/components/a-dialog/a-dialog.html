@@ -1,7 +1,7 @@
-<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [closable]="false" [style]="{ width: '25rem' }">
+<p-dialog [header]="label" [modal]="true" [(visible)]="visible" [closable]="false" [style]="{ width: '25rem' }">
   <ng-content select="[aDialogBody]"></ng-content>
-  <div>
-    <button type="button" (click)="closeDialog()" label="Save">Close</button>
-    <button type="button" (click)="saveData()">Save</button>
+  <div class="a-dialog-footer">
+    <button class="a-button-secondary" type="button" (click)="closeDialog()" label="Save">Close</button>
+    <button class="a-button" type="button" (click)="saveData()">Save</button>
   </div>
 </p-dialog>

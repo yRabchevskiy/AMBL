@@ -1,1 +1,27 @@
-<p>svg-union works!</p>
+<svg:rect 
+  x="0" 
+  y="0" 
+  width="0.2" 
+  height="0.1" 
+  rx="0.005"
+  fill="var(--a-gray-light)"
+  stroke="var(----a-black)"
+  stroke-width="0.001"
+  (click)="onItemClick()">
+</svg:rect>
+
+<svg:text 
+  x="0.05" 
+  y="0.03" 
+  text-anchor="middle" 
+  font-size="0.012" 
+  font-weight="bold"
+  fill="white">
+  {{ union.name }}
+</svg:text>
+
+<!-- /* --- БАЗОВІ КОЛЬОРИ --- */
+  --a-white: #ffffff;
+  --a-black: #000000;
+  --a-gray-light: #e5e5e5;
+  --a-accent-red: #D2042D; -->

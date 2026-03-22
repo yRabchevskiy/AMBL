@@ -1,21 +1,33 @@
 <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" appSvgZoom [minZoom]="0.2"
   [maxZoom]="10">
   <g id="a-zoom-container">
-    @if (dataItem.unions && dataItem.unions.length) {
-    @for (item of dataItem.unions; track $index) {
-    <app-svg-union [union]="item"></app-svg-union>
+    @for (item of dataItem.unions; track item._id) {
+    @if (item.parentId) {
+    @let parent = getParent(item.parentId);
+    @if (parent && parent.x !== undefined && parent.y !== undefined) {
+    <svg:line [attr.x1]="parent.x + 0.05" [attr.y1]="parent.y + 0.05" [attr.x2]="(item.x || 0) + 0.05"
+      [attr.y2]="item.y || 0" stroke="#b0b0b0" stroke-width="0.002" />
     }
-    } @else {
-    <text x="50%" y="50%" text-anchor="middle" fill="#888" font-size="0.05">Немає підрозділів для відображення</text>
+    }
     }
 
+    @for (item of dataItem.unions; track item._id) {
+    <g app-svg-union [union]="item" [selected]="item._id === selectedUnion?._id" (onSelect)="onSelectUnion($event)" [attr.transform]="'translate(' + item.x + ',' + item.y + ')'">
+    </g>
+    }
+
+    
   </g>
+  <text text-anchor="middle" 
+  font-size="0.012" 
+  font-weight="bold"
+  fill="black">{{ selectedUnion?.name}}</text>
 </svg>
 <div class="a-action-buttons">
   <button (click)="createUnion()">+</button>
 </div>
 
-<app-dialog [visible]="dialogVisible" (onClose)="onCloseDialog()" (onSave)="onSaveUnion()">
+<app-dialog label="Create Union" [visible]="dialogVisible" (onClose)="onCloseDialog()" (onSave)="onSaveUnion()">
   <form aDialogBody [formGroup]="unionForm">
     <div class="a-field m-top-auto">
       <label class="a-field-label" for="name">Union Name:</label>
