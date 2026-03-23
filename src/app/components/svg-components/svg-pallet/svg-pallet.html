@@ -1,5 +1,20 @@
-<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" appSvgZoom [minZoom]="0.2"
-  [maxZoom]="10">
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" appSvgZoom #zoom="appSvgZoom"
+  [minZoom]="0.2" [maxZoom]="10">
+  <defs>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0.003" result="blur" />
+
+      <feOffset in="blur" dx="0.005" dy="0.005" result="offsetBlur" />
+
+      <feColorMatrix in="offsetBlur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.2 0"
+        result="shadow" />
+
+      <feMerge>
+        <feMergeNode in="shadow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
   <g id="a-zoom-container">
     @for (item of dataItem.unions; track item._id) {
     @if (item.parentId) {
@@ -12,19 +27,22 @@
     }
 
     @for (item of dataItem.unions; track item._id) {
-    <g app-svg-union [union]="item" [selected]="item._id === selectedUnion?._id" (onSelect)="onSelectUnion($event)" [attr.transform]="'translate(' + item.x + ',' + item.y + ')'">
+    <g app-svg-union [union]="item" [selected]="item._id === selectedUnion?._id" (onSelect)="onSelectUnion($event)"
+      [attr.transform]="'translate(' + item.x + ',' + item.y + ')'">
     </g>
     }
 
-    
+
   </g>
-  <text text-anchor="middle" 
-  font-size="0.012" 
-  font-weight="bold"
-  fill="black">{{ selectedUnion?.name}}</text>
+  <text text-anchor="middle" font-size="0.012" font-weight="bold" fill="black">{{ selectedUnion?.name}}</text>
 </svg>
 <div class="a-action-buttons">
   <button (click)="createUnion()">+</button>
+
+  <button (click)="zoom.zoomIn()" title="Zoom In">+</button>
+  <button (click)="zoom.zoomOut()" title="Zoom Out">−</button>
+  <button (click)="zoom.fitToScreen()" title="Fit to screen">回</button>
+  <button (click)="zoom.resetZoom()" title="Reset">1:1</button>
 </div>
 
 <app-dialog label="Create Union" [visible]="dialogVisible" (onClose)="onCloseDialog()" (onSave)="onSaveUnion()">

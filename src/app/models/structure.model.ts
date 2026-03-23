@@ -11,8 +11,12 @@ export interface IUnion {
   structureId: string;
   positions: IPosition[];
 
-  x?: number;
+  children?: IUnion[]; // Додайте це поле
+  x?: number;          // І ці для координат
   y?: number;
+  subtreeWidth?: number;
+  subtreeHeight?: number;
+  level?: number;
 }
 
 export interface IStructure {

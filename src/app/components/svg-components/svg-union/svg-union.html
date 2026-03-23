@@ -1,27 +1,90 @@
-<svg:rect 
-  x="0" 
-  y="0" 
-  width="0.2" 
-  height="0.1" 
-  rx="0.005"
-  fill="var(--a-gray-light)"
-  stroke="var(----a-black)"
-  stroke-width="0.001"
-  (click)="onItemClick()">
+<svg:rect x="0" y="0" width="0.1" height="0.05" rx="0.005" fill="var(--a-white)" stroke="var(--a-gray-medium)"
+  stroke-width="0.001" filter="url(#dropShadow)">
 </svg:rect>
 
-<svg:text 
-  x="0.05" 
-  y="0.03" 
-  text-anchor="middle" 
-  font-size="0.012" 
-  font-weight="bold"
-  fill="white">
+<svg:g transform="translate(0.096, 0)" class="action-buttons-container">
+  <svg:g class="svg-button" style="cursor: pointer;" (click)="$event.stopPropagation()">
+    <svg:rect x="0" y="0.004" width="0.008" height="0.008" rx="0.001" fill="var(--a-black)"
+      stroke="var(--a-accent-red)" stroke-width="0.0005">
+      <svg:title>Add Union</svg:title>
+    </svg:rect>
+    <svg:text x="0.004" y="0.0105" font-size="0.008" font-weight="bold" fill="var(--a-accent-red)" text-anchor="middle">
+      +
+    </svg:text>
+  </svg:g>
+
+  <svg:g class="svg-button" style="cursor: pointer;" (click)="$event.stopPropagation()">
+    <svg:rect x="0" y="0.016" width="0.008" height="0.008" rx="0.001" fill="var(--a-black)"
+      stroke="var(--a-accent-red)" stroke-width="0.0005">
+      <svg:title>Add Position</svg:title>
+    </svg:rect>
+    <svg:text x="0.004" y="0.0225" font-size="0.008" font-weight="bold" fill="var(--a-accent-red)" text-anchor="middle">
+      P
+    </svg:text>
+  </svg:g>
+
+  <svg:g class="svg-button" style="cursor: pointer;" (click)="$event.stopPropagation()">
+    <svg:rect x="0" y="0.028" width="0.008" height="0.008" rx="0.001" fill="var(--a-black)"
+      stroke="var(--a-accent-red)" stroke-width="0.0005">
+      <svg:title>Remove union</svg:title>
+    </svg:rect>
+    <svg:text x="0.004" y="0.0345" font-size="0.008" font-weight="bold" fill="var(--a-accent-red)" text-anchor="middle">
+      ×
+    </svg:text>
+  </svg:g>
+</svg:g>
+
+<svg:text x="0.045" y="0.028" text-anchor="middle" font-size="0.01" font-weight="bold" fill="var(--a-black)">
   {{ union.name }}
 </svg:text>
 
 <!-- /* --- БАЗОВІ КОЛЬОРИ --- */
+  :root {
+  /* --- БАЗОВІ КОЛЬОРИ --- */
   --a-white: #ffffff;
   --a-black: #000000;
   --a-gray-light: #e5e5e5;
-  --a-accent-red: #D2042D; -->
+  --a-accent-red: #D2042D;
+
+  /* --- СТАН: HOVER (Наведення) --- */
+  /* Трохи темніший червоний та м'який сірий */
+  --a-hover-red: #b00326; 
+  --a-hover-gray: #d9d9d9;
+  --a-hover-white: #f9f9f9;
+
+  /* --- СТАН: SELECTED / ACTIVE (Вибрано) --- */
+  /* Насичений червоний для фокусу або світло-червоний фон для виділення */
+  --a-selected-red: #8e021e;
+  --a-selected-bg-red: #fbe6e9; /* Дуже світлий червоний для фону виділених рядків */
+  --a-selected-gray: #cccccc;
+
+  /* --- СТАН: DISABLED (Вимкнено) --- */
+  /* Кольори, що виглядають "неактивними" */
+  --a-disabled-bg: #f2f2f2;
+  --a-disabled-text: #a0a0a0;
+  --a-disabled-accent: #e5a1ad; /* "Блідий" червоний */
+
+  /* --- ДОДАТКОВІ ВІДТІНКИ СІРОГО --- */
+  --a-gray-medium: #999999;
+  --a-gray-dark: #333333;
+
+  /* --- ERROR (Використовуємо ваш базовий червоний) --- */
+  --a-error-main: #D2042D;
+  --a-error-hover: #b00326;
+  --a-error-bg: #fbe6e9; /* Світлий фон для алертів */
+
+  /* --- SUCCESS (Гармонійний зелений) --- */
+  --a-success-main: #28a745; 
+  --a-success-hover: #218838;
+  --a-success-bg: #e9f7ef;
+
+  /* --- WARNING (Теплий жовто-помаранчевий) --- */
+  /* Ми беремо ближче до помаранчевого, щоб він був читабельним на білому фоні */
+  --a-warning-main: #f39c12;
+  --a-warning-hover: #e67e22;
+  --a-warning-bg: #fff9e6;
+
+  /* --- INFO (Додатково: спокійний синій) --- */
+  --a-info-main: #17a2b8;
+  --a-info-bg: #e7f6f8;
+} -->

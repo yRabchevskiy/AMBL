@@ -8,7 +8,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TreeHelper } from '../tree.helper';
+import { LayoutType, TreeHelper } from '../tree.helper';
 
 @Component({
   selector: 'app-svg-pallet',
@@ -21,14 +21,17 @@ export class SvgPalletComponent {
   private fb = inject(FormBuilder);
   private actions$ = inject(Actions);
   private destroyRef = inject(DestroyRef);
+  currentLayout: LayoutType = LayoutType.hybrid;
+
   private _dataItem!: IFullStructureResponse;
 
   get dataItem() { return this._dataItem; }
   @Input() set dataItem(v: IFullStructureResponse) {
-    
+
     this.updateUnionsMap(v.unions);
+    v.unions = this.applyLayout(v.unions, this.currentLayout);
     this._dataItem = v;
-    this._dataItem.unions = TreeHelper.calculateCoordinates(v.unions);
+    
     console.log(this._dataItem)
   } // Вхідні дані для дерева
 
@@ -89,6 +92,19 @@ export class SvgPalletComponent {
   updateUnionsMap(unions: IUnion[]) {
     this.unionsMap.clear();
     unions.forEach(u => this.unionsMap.set(u._id, u));
+  }
+
+
+
+  applyLayout(data: IUnion[], type: LayoutType) {
+    this.currentLayout = type;
+    const tree = TreeHelper.buildTree(data); // твоя функція побудови дерева
+
+    if (type === LayoutType.horizontal) TreeHelper.layoutHorizontal(tree);
+    if (type === LayoutType.vertical) TreeHelper.layoutVertical(tree);
+    if (type === LayoutType.hybrid) TreeHelper.layoutHybrid(tree);
+
+    return tree;
   }
 
 
